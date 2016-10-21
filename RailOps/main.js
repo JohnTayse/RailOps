@@ -7,9 +7,11 @@ var locosselected = [];
 var stockselected = [];
 var setoutlist, switchlist;
 var sessioncounter = 1;
+var switchlistcounter = 1;
 
 $(function()
 {
+    localStorage.setItem("sessioncounter", 0);  //to reset session counter
     $('.controls').hide();
     getRRInfo();
 });
@@ -51,6 +53,8 @@ function pagesetup() {
     controls3 += '<a href="#" class="ui-btn ui-corner-all" id="backto2">Back</a>';    
 
     $('#controls3').html(controls3).trigger('create');
+
+    resumeSession();
 
     setbuttons();
 }
@@ -170,6 +174,9 @@ function startQuickSession() {
 }
 
 function setupSession() {
+    sessioncounter++;
+    switchlistcounter = 1;
+
     var numberofstock = 0;
     if (difficulty == "easy") {
         numberofstock = Math.floor(capacity * .65);
@@ -205,7 +212,7 @@ function setupSession() {
     };
 
     var setoutlisthtml = '';
-    setoutlisthtml += '<h2>Set Out</h2>';
+    setoutlisthtml += '<h3>Set Out</h3>';
     setoutlisthtml += '<table id="setout">';
     setoutlisthtml += '<tr>';
     setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
@@ -236,7 +243,7 @@ function setupSession() {
     };
 
     var switchlisthtml = '';
-    switchlisthtml += '<h2>Switch List</h2>';
+    switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
     switchlisthtml += '<table id="switchlist">';
     switchlisthtml += '<tr>';
     switchlisthtml += '<th colspan="3">Rolling Stock</th>';
@@ -266,6 +273,7 @@ function setupSession() {
     seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
 
     $('#session').append(seshcontrols).trigger('create');
+    $('#session').show();
 
     $('#nextsl').click(function () {
         nextswitchlist();
@@ -277,17 +285,17 @@ function setupSession() {
     })
 
     savepoint();
-    sessioncounter++;
 }
 
 function nextswitchlist() {
+    switchlistcounter++;
     setoutlist = switchlist;
 
     var stockselected = setoutlist.stock;
     var locationspots = setoutlist.locations;
 
     var setoutlisthtml = '';
-    setoutlisthtml += '<h2>Set Out</h2>';
+    setoutlisthtml += '<h3>Set Out</h3>';
     setoutlisthtml += '<table id="setout">';
     setoutlisthtml += '<tr>';
     setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
@@ -318,7 +326,7 @@ function nextswitchlist() {
     };
 
     var switchlisthtml = '';
-    switchlisthtml += '<h2>Switch List</h2>';
+    switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
     switchlisthtml += '<table id="switchlist">';
     switchlisthtml += '<tr>';
     switchlisthtml += '<th colspan="3">Rolling Stock</th>';
@@ -359,14 +367,115 @@ function nextswitchlist() {
     })
 
     savepoint();
-    sessioncounter++;
+}
+
+function resumeSession() {
+    if (typeof (Storage) !== "undefined") {
+        if (localStorage.getItem("setoutlist") !== null && localStorage.getItem("switchlist") !== null && localStorage.getItem("sessioncounter") !== null && localStorage.getItem("switchlistcounter") !== null) {
+            $('#session').hide();
+            setoutlist = JSON.parse(localStorage.getItem("setoutlist"));
+            setoutlist = JSON.parse(localStorage.getItem("switchlist"));
+            sessioncounter = localStorage.getItem("sessioncounter");
+            switchlistcounter = localStorage.getItem("switchlistcounter");
+            
+            var stockselected = setoutlist.stock;
+            var locationspots = setoutlist.locations;
+
+            var setoutlisthtml = '';
+            setoutlisthtml += '<h3>Set Out</h3>';
+            setoutlisthtml += '<table id="setout">';
+            setoutlisthtml += '<tr>';
+            setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
+            setoutlisthtml += '<th>Location<th>'
+            setoutlisthtml += '</tr>';
+            setoutlisthtml += '<tr>';
+            setoutlisthtml += '<th>Desc</th>';
+            setoutlisthtml += '<th>Type</th>';
+            setoutlisthtml += '<th>Marking</th>';
+            setoutlisthtml += '<th><th>'
+            setoutlisthtml += '</tr>';
+            $.each(stockselected, function (i) {
+                setoutlisthtml += '<tr>';
+                setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
+                setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
+                setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
+                setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
+                setoutlisthtml += '<tr>';
+            })
+
+
+            stockselected = shuffle(stockselected, stockselected.length);
+            locationspots = shuffle(locationspots, locationspots.length);
+
+            switchlist = {
+                "stock": stockselected,
+                "locations": locationspots
+            };
+
+            var switchlisthtml = '';
+            switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
+            switchlisthtml += '<table id="switchlist">';
+            switchlisthtml += '<tr>';
+            switchlisthtml += '<th colspan="3">Rolling Stock</th>';
+            switchlisthtml += '<th>Location<th>'
+            switchlisthtml += '</tr>';
+            switchlisthtml += '<tr>';
+            switchlisthtml += '<th>Desc</th>';
+            switchlisthtml += '<th>Type</th>';
+            switchlisthtml += '<th>Marking</th>';
+            switchlisthtml += '<th><th>'
+            switchlisthtml += '</tr>';
+            $.each(stockselected, function (i) {
+                switchlisthtml += '<tr>';
+                switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
+                switchlisthtml += '<td>' + stockselected[i].type + '</td>';
+                switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
+                switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
+                switchlisthtml += '<tr>';
+            })
+
+            $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
+            $('#session').append(setoutlisthtml).trigger('create');
+            $('#session').append(switchlisthtml).trigger('create');
+
+            var seshcontrols = '';
+            seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
+            seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
+
+            $('#session').append(seshcontrols).trigger('create');
+
+            $('#nextsl').click(function () {
+                nextswitchlist();
+            })
+
+            $('#seshbackto1').click(function () {
+                $('#session').hide();
+                $('#controls1').show();
+            })
+
+            savepoint();
+        }
+    } else {
+        if (localstoragealerted !== true) {
+            alert('Local storage not available. Sessions will not be saved.');
+            localstoragealerted = true;
+        }
+    }
 }
 
 function savepoint() {
-    //todo save switch list and settings into json files (local storage?)
-    //setoutlist
-    //switchlist
-    //sessioncounter
+    //saves session settings to local storage
+    if (typeof (Storage) !== "undefined") {
+        localStorage.setItem("setoutlist", JSON.stringify(setoutlist));
+        localStorage.setItem("switchlist", JSON.stringify(switchlist));
+        localStorage.setItem("sessioncounter", sessioncounter);
+        localStorage.setItem("switchlistcounter", switchlistcounter);
+    } else {
+        if (localstoragealerted !== true) {
+            alert('Local storage not available. Sessions will not be saved.');
+            localstoragealerted = true;
+        }
+    }
 }
 
 function shuffle(array, elements) {
