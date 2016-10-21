@@ -43,6 +43,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -66,7 +94,234 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="scripts\images\ajax-loader.gif" />
+    <Content Include="scripts\images\icons-png\action-black.png" />
+    <Content Include="scripts\images\icons-png\action-white.png" />
+    <Content Include="scripts\images\icons-png\alert-black.png" />
+    <Content Include="scripts\images\icons-png\alert-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-d-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-d-l-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-d-l-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-d-r-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-d-r-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-d-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-l-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-l-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-r-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-r-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-u-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-u-l-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-u-l-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-u-r-black.png" />
+    <Content Include="scripts\images\icons-png\arrow-u-r-white.png" />
+    <Content Include="scripts\images\icons-png\arrow-u-white.png" />
+    <Content Include="scripts\images\icons-png\audio-black.png" />
+    <Content Include="scripts\images\icons-png\audio-white.png" />
+    <Content Include="scripts\images\icons-png\back-black.png" />
+    <Content Include="scripts\images\icons-png\back-white.png" />
+    <Content Include="scripts\images\icons-png\bars-black.png" />
+    <Content Include="scripts\images\icons-png\bars-white.png" />
+    <Content Include="scripts\images\icons-png\bullets-black.png" />
+    <Content Include="scripts\images\icons-png\bullets-white.png" />
+    <Content Include="scripts\images\icons-png\calendar-black.png" />
+    <Content Include="scripts\images\icons-png\calendar-white.png" />
+    <Content Include="scripts\images\icons-png\camera-black.png" />
+    <Content Include="scripts\images\icons-png\camera-white.png" />
+    <Content Include="scripts\images\icons-png\carat-d-black.png" />
+    <Content Include="scripts\images\icons-png\carat-d-white.png" />
+    <Content Include="scripts\images\icons-png\carat-l-black.png" />
+    <Content Include="scripts\images\icons-png\carat-l-white.png" />
+    <Content Include="scripts\images\icons-png\carat-r-black.png" />
+    <Content Include="scripts\images\icons-png\carat-r-white.png" />
+    <Content Include="scripts\images\icons-png\carat-u-black.png" />
+    <Content Include="scripts\images\icons-png\carat-u-white.png" />
+    <Content Include="scripts\images\icons-png\check-black.png" />
+    <Content Include="scripts\images\icons-png\check-white.png" />
+    <Content Include="scripts\images\icons-png\clock-black.png" />
+    <Content Include="scripts\images\icons-png\clock-white.png" />
+    <Content Include="scripts\images\icons-png\cloud-black.png" />
+    <Content Include="scripts\images\icons-png\cloud-white.png" />
+    <Content Include="scripts\images\icons-png\comment-black.png" />
+    <Content Include="scripts\images\icons-png\comment-white.png" />
+    <Content Include="scripts\images\icons-png\delete-black.png" />
+    <Content Include="scripts\images\icons-png\delete-white.png" />
+    <Content Include="scripts\images\icons-png\edit-black.png" />
+    <Content Include="scripts\images\icons-png\edit-white.png" />
+    <Content Include="scripts\images\icons-png\eye-black.png" />
+    <Content Include="scripts\images\icons-png\eye-white.png" />
+    <Content Include="scripts\images\icons-png\forbidden-black.png" />
+    <Content Include="scripts\images\icons-png\forbidden-white.png" />
+    <Content Include="scripts\images\icons-png\forward-black.png" />
+    <Content Include="scripts\images\icons-png\forward-white.png" />
+    <Content Include="scripts\images\icons-png\gear-black.png" />
+    <Content Include="scripts\images\icons-png\gear-white.png" />
+    <Content Include="scripts\images\icons-png\grid-black.png" />
+    <Content Include="scripts\images\icons-png\grid-white.png" />
+    <Content Include="scripts\images\icons-png\heart-black.png" />
+    <Content Include="scripts\images\icons-png\heart-white.png" />
+    <Content Include="scripts\images\icons-png\home-black.png" />
+    <Content Include="scripts\images\icons-png\home-white.png" />
+    <Content Include="scripts\images\icons-png\info-black.png" />
+    <Content Include="scripts\images\icons-png\info-white.png" />
+    <Content Include="scripts\images\icons-png\location-black.png" />
+    <Content Include="scripts\images\icons-png\location-white.png" />
+    <Content Include="scripts\images\icons-png\lock-black.png" />
+    <Content Include="scripts\images\icons-png\lock-white.png" />
+    <Content Include="scripts\images\icons-png\mail-black.png" />
+    <Content Include="scripts\images\icons-png\mail-white.png" />
+    <Content Include="scripts\images\icons-png\minus-black.png" />
+    <Content Include="scripts\images\icons-png\minus-white.png" />
+    <Content Include="scripts\images\icons-png\navigation-black.png" />
+    <Content Include="scripts\images\icons-png\navigation-white.png" />
+    <Content Include="scripts\images\icons-png\phone-black.png" />
+    <Content Include="scripts\images\icons-png\phone-white.png" />
+    <Content Include="scripts\images\icons-png\plus-black.png" />
+    <Content Include="scripts\images\icons-png\plus-white.png" />
+    <Content Include="scripts\images\icons-png\power-black.png" />
+    <Content Include="scripts\images\icons-png\power-white.png" />
+    <Content Include="scripts\images\icons-png\recycle-black.png" />
+    <Content Include="scripts\images\icons-png\recycle-white.png" />
+    <Content Include="scripts\images\icons-png\refresh-black.png" />
+    <Content Include="scripts\images\icons-png\refresh-white.png" />
+    <Content Include="scripts\images\icons-png\search-black.png" />
+    <Content Include="scripts\images\icons-png\search-white.png" />
+    <Content Include="scripts\images\icons-png\shop-black.png" />
+    <Content Include="scripts\images\icons-png\shop-white.png" />
+    <Content Include="scripts\images\icons-png\star-black.png" />
+    <Content Include="scripts\images\icons-png\star-white.png" />
+    <Content Include="scripts\images\icons-png\tag-black.png" />
+    <Content Include="scripts\images\icons-png\tag-white.png" />
+    <Content Include="scripts\images\icons-png\user-black.png" />
+    <Content Include="scripts\images\icons-png\user-white.png" />
+    <Content Include="scripts\images\icons-png\video-black.png" />
+    <Content Include="scripts\images\icons-png\video-white.png" />
+    <Content Include="scripts\images\icons-svg\action-black.svg" />
+    <Content Include="scripts\images\icons-svg\action-white.svg" />
+    <Content Include="scripts\images\icons-svg\alert-black.svg" />
+    <Content Include="scripts\images\icons-svg\alert-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-d-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-d-l-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-d-l-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-d-r-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-d-r-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-d-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-l-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-l-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-r-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-r-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-u-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-u-l-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-u-l-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-u-r-black.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-u-r-white.svg" />
+    <Content Include="scripts\images\icons-svg\arrow-u-white.svg" />
+    <Content Include="scripts\images\icons-svg\audio-black.svg" />
+    <Content Include="scripts\images\icons-svg\audio-white.svg" />
+    <Content Include="scripts\images\icons-svg\back-black.svg" />
+    <Content Include="scripts\images\icons-svg\back-white.svg" />
+    <Content Include="scripts\images\icons-svg\bars-black.svg" />
+    <Content Include="scripts\images\icons-svg\bars-white.svg" />
+    <Content Include="scripts\images\icons-svg\bullets-black.svg" />
+    <Content Include="scripts\images\icons-svg\bullets-white.svg" />
+    <Content Include="scripts\images\icons-svg\calendar-black.svg" />
+    <Content Include="scripts\images\icons-svg\calendar-white.svg" />
+    <Content Include="scripts\images\icons-svg\camera-black.svg" />
+    <Content Include="scripts\images\icons-svg\camera-white.svg" />
+    <Content Include="scripts\images\icons-svg\carat-d-black.svg" />
+    <Content Include="scripts\images\icons-svg\carat-d-white.svg" />
+    <Content Include="scripts\images\icons-svg\carat-l-black.svg" />
+    <Content Include="scripts\images\icons-svg\carat-l-white.svg" />
+    <Content Include="scripts\images\icons-svg\carat-r-black.svg" />
+    <Content Include="scripts\images\icons-svg\carat-r-white.svg" />
+    <Content Include="scripts\images\icons-svg\carat-u-black.svg" />
+    <Content Include="scripts\images\icons-svg\carat-u-white.svg" />
+    <Content Include="scripts\images\icons-svg\check-black.svg" />
+    <Content Include="scripts\images\icons-svg\check-white.svg" />
+    <Content Include="scripts\images\icons-svg\clock-black.svg" />
+    <Content Include="scripts\images\icons-svg\clock-white.svg" />
+    <Content Include="scripts\images\icons-svg\cloud-black.svg" />
+    <Content Include="scripts\images\icons-svg\cloud-white.svg" />
+    <Content Include="scripts\images\icons-svg\comment-black.svg" />
+    <Content Include="scripts\images\icons-svg\comment-white.svg" />
+    <Content Include="scripts\images\icons-svg\delete-black.svg" />
+    <Content Include="scripts\images\icons-svg\delete-white.svg" />
+    <Content Include="scripts\images\icons-svg\edit-black.svg" />
+    <Content Include="scripts\images\icons-svg\edit-white.svg" />
+    <Content Include="scripts\images\icons-svg\eye-black.svg" />
+    <Content Include="scripts\images\icons-svg\eye-white.svg" />
+    <Content Include="scripts\images\icons-svg\forbidden-black.svg" />
+    <Content Include="scripts\images\icons-svg\forbidden-white.svg" />
+    <Content Include="scripts\images\icons-svg\forward-black.svg" />
+    <Content Include="scripts\images\icons-svg\forward-white.svg" />
+    <Content Include="scripts\images\icons-svg\gear-black.svg" />
+    <Content Include="scripts\images\icons-svg\gear-white.svg" />
+    <Content Include="scripts\images\icons-svg\grid-black.svg" />
+    <Content Include="scripts\images\icons-svg\grid-white.svg" />
+    <Content Include="scripts\images\icons-svg\heart-black.svg" />
+    <Content Include="scripts\images\icons-svg\heart-white.svg" />
+    <Content Include="scripts\images\icons-svg\home-black.svg" />
+    <Content Include="scripts\images\icons-svg\home-white.svg" />
+    <Content Include="scripts\images\icons-svg\info-black.svg" />
+    <Content Include="scripts\images\icons-svg\info-white.svg" />
+    <Content Include="scripts\images\icons-svg\location-black.svg" />
+    <Content Include="scripts\images\icons-svg\location-white.svg" />
+    <Content Include="scripts\images\icons-svg\lock-black.svg" />
+    <Content Include="scripts\images\icons-svg\lock-white.svg" />
+    <Content Include="scripts\images\icons-svg\mail-black.svg" />
+    <Content Include="scripts\images\icons-svg\mail-white.svg" />
+    <Content Include="scripts\images\icons-svg\minus-black.svg" />
+    <Content Include="scripts\images\icons-svg\minus-white.svg" />
+    <Content Include="scripts\images\icons-svg\navigation-black.svg" />
+    <Content Include="scripts\images\icons-svg\navigation-white.svg" />
+    <Content Include="scripts\images\icons-svg\phone-black.svg" />
+    <Content Include="scripts\images\icons-svg\phone-white.svg" />
+    <Content Include="scripts\images\icons-svg\plus-black.svg" />
+    <Content Include="scripts\images\icons-svg\plus-white.svg" />
+    <Content Include="scripts\images\icons-svg\power-black.svg" />
+    <Content Include="scripts\images\icons-svg\power-white.svg" />
+    <Content Include="scripts\images\icons-svg\recycle-black.svg" />
+    <Content Include="scripts\images\icons-svg\recycle-white.svg" />
+    <Content Include="scripts\images\icons-svg\refresh-black.svg" />
+    <Content Include="scripts\images\icons-svg\refresh-white.svg" />
+    <Content Include="scripts\images\icons-svg\search-black.svg" />
+    <Content Include="scripts\images\icons-svg\search-white.svg" />
+    <Content Include="scripts\images\icons-svg\shop-black.svg" />
+    <Content Include="scripts\images\icons-svg\shop-white.svg" />
+    <Content Include="scripts\images\icons-svg\star-black.svg" />
+    <Content Include="scripts\images\icons-svg\star-white.svg" />
+    <Content Include="scripts\images\icons-svg\tag-black.svg" />
+    <Content Include="scripts\images\icons-svg\tag-white.svg" />
+    <Content Include="scripts\images\icons-svg\user-black.svg" />
+    <Content Include="scripts\images\icons-svg\user-white.svg" />
+    <Content Include="scripts\images\icons-svg\video-black.svg" />
+    <Content Include="scripts\images\icons-svg\video-white.svg" />
+    <Content Include="scripts\jquery-2.1.3.min.js" />
+    <Content Include="scripts\jquery.mobile-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile-1.4.5.js" />
+    <Content Include="scripts\jquery.mobile-1.4.5.min.css" />
+    <Content Include="scripts\jquery.mobile-1.4.5.min.js" />
+    <Content Include="scripts\jquery.mobile.external-png-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile.external-png-1.4.5.min.css" />
+    <Content Include="scripts\jquery.mobile.icons-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile.icons-1.4.5.min.css" />
+    <Content Include="scripts\jquery.mobile.inline-png-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile.inline-png-1.4.5.min.css" />
+    <Content Include="scripts\jquery.mobile.inline-svg-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile.inline-svg-1.4.5.min.css" />
+    <Content Include="scripts\jquery.mobile.structure-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile.structure-1.4.5.min.css" />
+    <Content Include="scripts\jquery.mobile.theme-1.4.5.css" />
+    <Content Include="scripts\jquery.mobile.theme-1.4.5.min.css" />
+    <Content Include="main.css" />
+    <Content Include="main.js" />
     <Content Include="packages.config" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Boyd-SimpleSwitchlistSystem.pdf" />
+    <Content Include="scripts\jquery.mobile-1.4.5.min.map" />
+    <Content Include="rrinfo.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -75,6 +330,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="scripts\ai.0.22.9-build00167.js" />
+    <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,130 @@
+{"industries":[
+		{"desc":"Harbor",
+      "spots": 3
+		},
+		{"desc":"Engine Shed",
+			"spots":3
+		},
+		{"desc":"Cargo Station",
+			"spots":2
+		},
+		{"desc":"Aggregate Depot",
+			"spots":1
+		},
+		{"desc":"Harbor Siding",
+			"spots":1
+		},
+		{"desc":"Wind Farm",
+			"spots":2
+		}
+	],
+"locomotives":[
+		{"desc":"Emerald Night",
+      "number": 10194,
+      "marking": "LP"
+		},
+		{"desc":"Maersk Line",
+      "number": 10219,
+      "marking": "ML"
+		},
+		{"desc":"City Cargo",
+      "number": 600052,
+      "marking": "CC"
+		},
+		{"desc":"City Cargo",
+      "number": 4512,
+      "marking": "CC"
+		},
+		{"desc":"Basal Hamburg",
+      "number": 7760,
+      "marking": "BH"
+		}
+	],
+"rollingstock":[
+		{"desc":"Secure Boxcar",
+      "type": "boxcar",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Flatcar with Backhoe",
+      "type": "flatcar",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Long Flatcar with Grader",
+      "type": "flatcar",
+      "marking": "LF",
+      "spots": 1
+		},
+		{"desc":"Well with 2 Large, 2 Small 4-wides",
+      "type": "well",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Well with Reefer",
+      "type": "well",
+      "marking": "ML",
+      "spots": 1
+		},
+		{"desc":"Well with Engine",
+      "type": "well",
+      "marking": "ML",
+      "spots": 1
+		},
+		{"desc":"Open-top Hopper",
+      "type": "hopper",
+      "marking": "LF",
+      "spots": 1
+		},
+		{"desc":"Octan Tanker",
+      "type": "tanker",
+      "marking": "LF",
+      "spots": 1
+		},
+		{"desc":"Autorack",
+      "type": "specialized",
+      "marking": "LF",
+      "spots": 1
+		},
+		{"desc":"Intermodal well 7 & 8",
+      "type": "well",
+      "marking": "TTX",
+      "spots": 2
+		},
+		{"desc":"Caboose",
+      "type": "aux",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Small open-top Hopper",
+      "type": "hopper",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Flatcar with 3 pallets",
+      "type": "flatcar",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Flatcar with 2 6-wides",
+      "type": "flatcar",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Flatcar with 2 6-wides (blue)",
+      "type": "flatcar",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Small Octan Tanker",
+      "type": "tanker",
+      "marking": "CC",
+      "spots": 1
+		},
+		{"desc":"Passenger Coach",
+      "type": "passenger",
+      "marking": "LP",
+      "spots": 1
+		}
+  ]
+}
