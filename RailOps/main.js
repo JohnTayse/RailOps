@@ -6,6 +6,7 @@ var locos;
 var locosselected = [];
 var stockselected = [];
 var setoutlist, switchlist;
+var sessioncounter = 1;
 
 $(function()
 {
@@ -256,7 +257,8 @@ function setupSession() {
         switchlisthtml += '<tr>';
     })
 
-    $('#session').html(setoutlisthtml).trigger('create');
+    $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
+    $('#session').append(setoutlisthtml).trigger('create');
     $('#session').append(switchlisthtml).trigger('create');
 
     var seshcontrols = '';
@@ -275,17 +277,96 @@ function setupSession() {
     })
 
     savepoint();
+    sessioncounter++;
 }
 
 function nextswitchlist() {
-    //todo new switch list
-    //use switchlist as location spots
+    setoutlist = switchlist;
+
+    var stockselected = setoutlist.stock;
+    var locationspots = setoutlist.locations;
+
+    var setoutlisthtml = '';
+    setoutlisthtml += '<h2>Set Out</h2>';
+    setoutlisthtml += '<table id="setout">';
+    setoutlisthtml += '<tr>';
+    setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
+    setoutlisthtml += '<th>Location<th>'
+    setoutlisthtml += '</tr>';
+    setoutlisthtml += '<tr>';
+    setoutlisthtml += '<th>Desc</th>';
+    setoutlisthtml += '<th>Type</th>';
+    setoutlisthtml += '<th>Marking</th>';
+    setoutlisthtml += '<th><th>'
+    setoutlisthtml += '</tr>';
+    $.each(stockselected, function (i) {
+        setoutlisthtml += '<tr>';
+        setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
+        setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
+        setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
+        setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
+        setoutlisthtml += '<tr>';
+    })
+
+
+    stockselected = shuffle(stockselected, stockselected.length);
+    locationspots = shuffle(locationspots, locationspots.length);
+
+    switchlist = {
+        "stock": stockselected,
+        "locations": locationspots
+    };
+
+    var switchlisthtml = '';
+    switchlisthtml += '<h2>Switch List</h2>';
+    switchlisthtml += '<table id="switchlist">';
+    switchlisthtml += '<tr>';
+    switchlisthtml += '<th colspan="3">Rolling Stock</th>';
+    switchlisthtml += '<th>Location<th>'
+    switchlisthtml += '</tr>';
+    switchlisthtml += '<tr>';
+    switchlisthtml += '<th>Desc</th>';
+    switchlisthtml += '<th>Type</th>';
+    switchlisthtml += '<th>Marking</th>';
+    switchlisthtml += '<th><th>'
+    switchlisthtml += '</tr>';
+    $.each(stockselected, function (i) {
+        switchlisthtml += '<tr>';
+        switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
+        switchlisthtml += '<td>' + stockselected[i].type + '</td>';
+        switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
+        switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
+        switchlisthtml += '<tr>';
+    })
+
+    $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
+    $('#session').append(setoutlisthtml).trigger('create');
+    $('#session').append(switchlisthtml).trigger('create');
+
+    var seshcontrols = '';
+    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
+    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
+
+    $('#session').append(seshcontrols).trigger('create');
+
+    $('#nextsl').click(function () {
+        nextswitchlist();
+    })
+
+    $('#seshbackto1').click(function () {
+        $('#session').hide();
+        $('#controls1').show();
+    })
+
+    savepoint();
+    sessioncounter++;
 }
 
 function savepoint() {
     //todo save switch list and settings into json files (local storage?)
     //setoutlist
     //switchlist
+    //sessioncounter
 }
 
 function shuffle(array, elements) {
