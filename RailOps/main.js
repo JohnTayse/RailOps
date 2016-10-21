@@ -11,7 +11,7 @@ var switchlistcounter = 1;
 
 $(function()
 {
-    localStorage.setItem("sessioncounter", 0);  //to reset session counter
+    //localStorage.setItem("sessioncounter", 0);  //to reset session counter
     $('.controls').hide();
     getRRInfo();
 });
