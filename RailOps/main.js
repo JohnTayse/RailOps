@@ -364,8 +364,6 @@ function sessionhtml(setoutlisthtml, switchlisthtml) {
     })
 
     $('tbody tr').click(function () {
-        console.log($(this).css('background-color'))
-
         if ($(this).css('background-color') == 'rgb(243, 243, 21)') {
             $(this).css('background-color', '#F9F9F9');
         } else {
