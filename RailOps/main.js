@@ -65,6 +65,7 @@ function setbuttons() {
             if (confirm('Starting a new session will delete your current session. Are you sure you would like to start a new session?')) {
                 $('#controls1').hide();
                 $('#controls2').show();
+                //todo uncheck previous selection
             }
         } else {
             $('#controls1').hide();
@@ -211,28 +212,7 @@ function setupSession() {
         "locations": locationspots
     };
 
-    var setoutlisthtml = '';
-    setoutlisthtml += '<h3>Set Out</h3>';
-    setoutlisthtml += '<table id="setout">';
-    setoutlisthtml += '<tr>';
-    setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
-    setoutlisthtml += '<th>Location<th>'
-    setoutlisthtml += '</tr>';
-    setoutlisthtml += '<tr>';
-    setoutlisthtml += '<th>Desc</th>';
-    setoutlisthtml += '<th>Type</th>';
-    setoutlisthtml += '<th>Marking</th>';
-    setoutlisthtml += '<th><th>'
-    setoutlisthtml += '</tr>';
-    $.each(stockselected, function (i) {
-        setoutlisthtml += '<tr>';
-        setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
-        setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
-        setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
-        setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
-        setoutlisthtml += '<tr>';
-    })
-
+    var setoutlisthtml = setsetoutlisthtml(stockselected, locationspots);
 
     stockselected = shuffle(stockselected, stockselected.length);
     locationspots = shuffle(locationspots, locationspots.length);
@@ -242,49 +222,10 @@ function setupSession() {
         "locations": locationspots
     };
 
-    var switchlisthtml = '';
-    switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
-    switchlisthtml += '<table id="switchlist">';
-    switchlisthtml += '<tr>';
-    switchlisthtml += '<th colspan="3">Rolling Stock</th>';
-    switchlisthtml += '<th>Location<th>'
-    switchlisthtml += '</tr>';
-    switchlisthtml += '<tr>';
-    switchlisthtml += '<th>Desc</th>';
-    switchlisthtml += '<th>Type</th>';
-    switchlisthtml += '<th>Marking</th>';
-    switchlisthtml += '<th><th>'
-    switchlisthtml += '</tr>';
-    $.each(stockselected, function (i) {
-        switchlisthtml += '<tr>';
-        switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
-        switchlisthtml += '<td>' + stockselected[i].type + '</td>';
-        switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
-        switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
-        switchlisthtml += '<tr>';
-    })
+    var switchlisthtml = setswitchlisthtml(stockselected, locationspots);    
 
-    $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
-    $('#session').append(setoutlisthtml).trigger('create');
-    $('#session').append(switchlisthtml).trigger('create');
-
-    var seshcontrols = '';
-    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
-    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
-
-    $('#session').append(seshcontrols).trigger('create');
+    sessionhtml(setoutlisthtml, switchlisthtml);
     $('#session').show();
-
-    $('#nextsl').click(function () {
-        nextswitchlist();
-    })
-
-    $('#seshbackto1').click(function () {
-        $('#session').hide();
-        $('#controls1').show();
-    })
-
-    savepoint();
 }
 
 function nextswitchlist() {
@@ -294,28 +235,7 @@ function nextswitchlist() {
     var stockselected = setoutlist.stock;
     var locationspots = setoutlist.locations;
 
-    var setoutlisthtml = '';
-    setoutlisthtml += '<h3>Set Out</h3>';
-    setoutlisthtml += '<table id="setout">';
-    setoutlisthtml += '<tr>';
-    setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
-    setoutlisthtml += '<th>Location<th>'
-    setoutlisthtml += '</tr>';
-    setoutlisthtml += '<tr>';
-    setoutlisthtml += '<th>Desc</th>';
-    setoutlisthtml += '<th>Type</th>';
-    setoutlisthtml += '<th>Marking</th>';
-    setoutlisthtml += '<th><th>'
-    setoutlisthtml += '</tr>';
-    $.each(stockselected, function (i) {
-        setoutlisthtml += '<tr>';
-        setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
-        setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
-        setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
-        setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
-        setoutlisthtml += '<tr>';
-    })
-
+    var setoutlisthtml = setsetoutlisthtml(stockselected, locationspots);
 
     stockselected = shuffle(stockselected, stockselected.length);
     locationspots = shuffle(locationspots, locationspots.length);
@@ -325,48 +245,10 @@ function nextswitchlist() {
         "locations": locationspots
     };
 
-    var switchlisthtml = '';
-    switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
-    switchlisthtml += '<table id="switchlist">';
-    switchlisthtml += '<tr>';
-    switchlisthtml += '<th colspan="3">Rolling Stock</th>';
-    switchlisthtml += '<th>Location<th>'
-    switchlisthtml += '</tr>';
-    switchlisthtml += '<tr>';
-    switchlisthtml += '<th>Desc</th>';
-    switchlisthtml += '<th>Type</th>';
-    switchlisthtml += '<th>Marking</th>';
-    switchlisthtml += '<th><th>'
-    switchlisthtml += '</tr>';
-    $.each(stockselected, function (i) {
-        switchlisthtml += '<tr>';
-        switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
-        switchlisthtml += '<td>' + stockselected[i].type + '</td>';
-        switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
-        switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
-        switchlisthtml += '<tr>';
-    })
+    var switchlisthtml = setswitchlisthtml(stockselected, locationspots);
 
-    $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
-    $('#session').append(setoutlisthtml).trigger('create');
-    $('#session').append(switchlisthtml).trigger('create');
-
-    var seshcontrols = '';
-    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
-    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
-
-    $('#session').append(seshcontrols).trigger('create');
-
-    $('#nextsl').click(function () {
-        nextswitchlist();
-    })
-
-    $('#seshbackto1').click(function () {
-        $('#session').hide();
-        $('#controls1').show();
-    })
-
-    savepoint();
+    sessionhtml(setoutlisthtml, switchlisthtml);
+    $('#session').show();
 }
 
 function resumeSession() {
@@ -381,28 +263,7 @@ function resumeSession() {
             var stockselected = setoutlist.stock;
             var locationspots = setoutlist.locations;
 
-            var setoutlisthtml = '';
-            setoutlisthtml += '<h3>Set Out</h3>';
-            setoutlisthtml += '<table id="setout">';
-            setoutlisthtml += '<tr>';
-            setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
-            setoutlisthtml += '<th>Location<th>'
-            setoutlisthtml += '</tr>';
-            setoutlisthtml += '<tr>';
-            setoutlisthtml += '<th>Desc</th>';
-            setoutlisthtml += '<th>Type</th>';
-            setoutlisthtml += '<th>Marking</th>';
-            setoutlisthtml += '<th><th>'
-            setoutlisthtml += '</tr>';
-            $.each(stockselected, function (i) {
-                setoutlisthtml += '<tr>';
-                setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
-                setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
-                setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
-                setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
-                setoutlisthtml += '<tr>';
-            })
-
+            var setoutlisthtml = setsetoutlisthtml(stockselected, locationspots);
 
             stockselected = shuffle(stockselected, stockselected.length);
             locationspots = shuffle(locationspots, locationspots.length);
@@ -412,48 +273,9 @@ function resumeSession() {
                 "locations": locationspots
             };
 
-            var switchlisthtml = '';
-            switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
-            switchlisthtml += '<table id="switchlist">';
-            switchlisthtml += '<tr>';
-            switchlisthtml += '<th colspan="3">Rolling Stock</th>';
-            switchlisthtml += '<th>Location<th>'
-            switchlisthtml += '</tr>';
-            switchlisthtml += '<tr>';
-            switchlisthtml += '<th>Desc</th>';
-            switchlisthtml += '<th>Type</th>';
-            switchlisthtml += '<th>Marking</th>';
-            switchlisthtml += '<th><th>'
-            switchlisthtml += '</tr>';
-            $.each(stockselected, function (i) {
-                switchlisthtml += '<tr>';
-                switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
-                switchlisthtml += '<td>' + stockselected[i].type + '</td>';
-                switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
-                switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
-                switchlisthtml += '<tr>';
-            })
+            var switchlisthtml = setswitchlisthtml(stockselected, locationspots);
 
-            $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
-            $('#session').append(setoutlisthtml).trigger('create');
-            $('#session').append(switchlisthtml).trigger('create');
-
-            var seshcontrols = '';
-            seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
-            seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
-
-            $('#session').append(seshcontrols).trigger('create');
-
-            $('#nextsl').click(function () {
-                nextswitchlist();
-            })
-
-            $('#seshbackto1').click(function () {
-                $('#session').hide();
-                $('#controls1').show();
-            })
-
-            savepoint();
+            sessionhtml(setoutlisthtml, switchlisthtml);
         }
     } else {
         if (localstoragealerted !== true) {
@@ -461,6 +283,97 @@ function resumeSession() {
             localstoragealerted = true;
         }
     }
+}
+
+function setsetoutlisthtml(stockselected, locationspots) {
+    var setoutlisthtml = '';
+    setoutlisthtml += '<h3>Set Out</h3>';
+    setoutlisthtml += '<table id="setout">';
+    setoutlisthtml += '<thead>';
+    setoutlisthtml += '<tr>';
+    setoutlisthtml += '<th colspan="3">Rolling Stock</th>';
+    setoutlisthtml += '<th>Location<th>'
+    setoutlisthtml += '</tr>';
+    setoutlisthtml += '</thead>';
+    setoutlisthtml += '<tbody>';
+    setoutlisthtml += '<tr>';
+    setoutlisthtml += '<th>Desc</th>';
+    setoutlisthtml += '<th>Type</th>';
+    setoutlisthtml += '<th>Marking</th>';
+    setoutlisthtml += '<th><th>'
+    setoutlisthtml += '</tr>';
+    $.each(stockselected, function (i) {
+        setoutlisthtml += '<tr>';
+        setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
+        setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
+        setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
+        setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
+        setoutlisthtml += '<tr>';
+    })
+    setoutlisthtml += '</tbody>';
+    return setoutlisthtml;
+}
+
+function setswitchlisthtml(stockselected, locationspots) {
+    var switchlisthtml = '';
+    switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
+    switchlisthtml += '<table id="switchlist">';
+    switchlisthtml += '<thead>';
+    switchlisthtml += '<tr>';
+    switchlisthtml += '<th colspan="3">Rolling Stock</th>';
+    switchlisthtml += '<th>Location<th>'
+    switchlisthtml += '</tr>';
+    switchlisthtml += '</thead>';
+    switchlisthtml += '<tbody>';
+    switchlisthtml += '<tr>';
+    switchlisthtml += '<th>Desc</th>';
+    switchlisthtml += '<th>Type</th>';
+    switchlisthtml += '<th>Marking</th>';
+    switchlisthtml += '<th><th>'
+    switchlisthtml += '</tr>';
+    $.each(stockselected, function (i) {
+        switchlisthtml += '<tr>';
+        switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
+        switchlisthtml += '<td>' + stockselected[i].type + '</td>';
+        switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
+        switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
+        switchlisthtml += '<tr>';
+    })
+    switchlisthtml += '</tbody>';
+    return switchlisthtml;
+}
+
+function sessionhtml(setoutlisthtml, switchlisthtml) {
+    $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
+    $('#session').append(setoutlisthtml).trigger('create');
+    $('#session').append(switchlisthtml).trigger('create');
+
+    var seshcontrols = '';
+    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
+    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
+
+    $('#session').append(seshcontrols).trigger('create');
+
+    $('#nextsl').click(function () {
+        nextswitchlist();
+    })
+
+    $('#seshbackto1').click(function () {
+        $('#controls1').show();
+        $('#session').hide();
+    })
+
+    $('tbody tr').click(function () {
+        console.log($(this).css('background-color'))
+
+        if ($(this).css('background-color') == 'rgb(243, 243, 21)') {
+            $(this).css('background-color', '#F9F9F9');
+        } else {
+            $(this).css('background-color', '#F3F315');
+        }
+    })
+
+    savepoint();
 }
 
 function savepoint() {
