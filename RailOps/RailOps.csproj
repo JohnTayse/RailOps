@@ -94,8 +94,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="favicon.ico" />
     <Content Include="index.html" />
-    <Content Include="mainTEST.js" />
     <Content Include="scripts\images\ajax-loader.gif" />
     <Content Include="scripts\images\icons-png\action-black.png" />
     <Content Include="scripts\images\icons-png\action-white.png" />

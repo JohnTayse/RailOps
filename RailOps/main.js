@@ -1,13 +1,16 @@
 var industries, locomotives, rollingstock;
 var capacity;
+var locationspots = [];
 var stock;
 var difficulty;
 var locos;
 var locosselected = [];
-var stockselected = [];
 var setoutlist, switchlist;
 var sessioncounter = 1;
 var switchlistcounter = 1;
+var industryOrder = [];
+var locomotiveOrder = [];
+var rollingstockOrder = [];
 
 $(function()
 {
@@ -24,13 +27,23 @@ function getRRInfo(){
 	    rollingstock = json.rollingstock;
 
 	    capacity = 0;
-		$.each(industries, function(){
-            capacity += this.spots
+	    $.each(industries, function () {
+	        var industry = this;
+	        capacity += industry.spots;
+		    for (var i = 0; i < industry.spots; i++) {
+		        locationspots[locationspots.length] = industry;
+		    }
 		})
 		stock = 0;
 		$.each(rollingstock, function () {
-		    stock += this.spots
-		})
+		    stock += this.spots;
+		});
+
+		fillOrderObject(industryOrder, industries);
+		fillOrderObject(locomotiveOrder, locomotives);
+		fillOrderObject(rollingstockOrder, rollingstock);
+
+		console.log(industryOrder);
 
 		pagesetup();
 
@@ -38,6 +51,12 @@ function getRRInfo(){
 
 		$('#controls1').show();
     });
+}
+
+function fillOrderObject(orderArray, orderObject){
+    for (var i = 1; i <= Object.keys(orderObject).length; i++){
+        orderArray[orderArray.length] = "" + i + "";
+    }
 }
 
 function pagesetup() {
@@ -170,7 +189,7 @@ function startQuickSession() {
     $('#controls1').hide();
     difficulty = "easy";
     locos = 1;
-    locosselected = shuffle(locomotives, 1);
+    locosselected = shuffle(locomotives)[0];
     setupSession();
 }
 
@@ -189,42 +208,32 @@ function setupSession() {
         numberofstock = capacity;
     }
 
-    if (numberofstock > rollingstock.length) {
-        numberofstock = rollingstock.length;
+    if (numberofstock > ObjectLength(rollingstock)) {
+        numberofstock = ObjectLength(rollingstock);
     }
 
     //todo something with the locomotive(s)
 
-    stockselected = shuffle(rollingstock, numberofstock);
-
-    var locationspots = [];
-    $.each(industries, function () {
-        var industry = this;
-        for (var i = 0; i < industry.spots; i++) {
-            locationspots[locationspots.length] = industry
-        }
-    })
-
-    locationspots = shuffle(locationspots, locationspots.length);
+    var setoutstock = shuffle(createNumberArray(ObjectLength(rollingstock))).slice(0, numberofstock);
+    var setoutlocations = shuffle(createNumberArray(ObjectLength(locationspots)));
 
     setoutlist = {
-        "stock": stockselected,
-        "locations": locationspots
+        "stock": setoutstock,
+        "locations": setoutlocations
     };
 
-    var setoutlisthtml = setsetoutlisthtml(stockselected, locationspots);
-
-    stockselected = shuffle(stockselected, stockselected.length);
-    locationspots = shuffle(locationspots, locationspots.length);
+    var switchstock = shuffle(setoutlist.stock.slice());
+    var switchlocations = shuffle(createNumberArray(ObjectLength(locationspots)));
 
     switchlist = {
-        "stock": stockselected,
-        "locations": locationspots
-    };
+        "stock": switchstock,
+        "locations": switchlocations
+    };   
 
-    var switchlisthtml = setswitchlisthtml(stockselected, locationspots);    
+    console.log(setoutlist);
+    console.log(switchlist);
 
-    sessionhtml(setoutlisthtml, switchlisthtml);
+    sessionhtml();
     $('#session').show();
 }
 
@@ -232,22 +241,15 @@ function nextswitchlist() {
     switchlistcounter++;
     setoutlist = switchlist;
 
-    var stockselected = setoutlist.stock;
-    var locationspots = setoutlist.locations;
-
-    var setoutlisthtml = setsetoutlisthtml(stockselected, locationspots);
-
-    stockselected = shuffle(stockselected, stockselected.length);
-    locationspots = shuffle(locationspots, locationspots.length);
+    var switchstock = shuffle(setoutlist.stock.slice());
+    var switchlocations = shuffle(createNumberArray(ObjectLength(locationspots)));
 
     switchlist = {
-        "stock": stockselected,
-        "locations": locationspots
+        "stock": switchstock,
+        "locations": switchlocations
     };
 
-    var switchlisthtml = setswitchlisthtml(stockselected, locationspots);
-
-    sessionhtml(setoutlisthtml, switchlisthtml);
+    sessionhtml();
     $('#session').show();
 }
 
@@ -256,26 +258,10 @@ function resumeSession() {
         if (localStorage.getItem("setoutlist") !== null && localStorage.getItem("switchlist") !== null && localStorage.getItem("sessioncounter") !== null && localStorage.getItem("switchlistcounter") !== null) {
             $('#session').hide();
             setoutlist = JSON.parse(localStorage.getItem("setoutlist"));
-            setoutlist = JSON.parse(localStorage.getItem("switchlist"));
+            switchlist = JSON.parse(localStorage.getItem("switchlist"));
             sessioncounter = localStorage.getItem("sessioncounter");
             switchlistcounter = localStorage.getItem("switchlistcounter");
-            
-            var stockselected = setoutlist.stock;
-            var locationspots = setoutlist.locations;
-
-            var setoutlisthtml = setsetoutlisthtml(stockselected, locationspots);
-
-            stockselected = shuffle(stockselected, stockselected.length);
-            locationspots = shuffle(locationspots, locationspots.length);
-
-            switchlist = {
-                "stock": stockselected,
-                "locations": locationspots
-            };
-
-            var switchlisthtml = setswitchlisthtml(stockselected, locationspots);
-
-            sessionhtml(setoutlisthtml, switchlisthtml);
+            sessionhtml();
         }
     } else {
         if (localstoragealerted !== true) {
@@ -285,7 +271,7 @@ function resumeSession() {
     }
 }
 
-function setsetoutlisthtml(stockselected, locationspots) {
+function sessionhtml() {
     var setoutlisthtml = '';
     setoutlisthtml += '<h3>Set Out</h3>';
     setoutlisthtml += '<table id="setout">';
@@ -302,19 +288,17 @@ function setsetoutlisthtml(stockselected, locationspots) {
     setoutlisthtml += '<th>Marking</th>';
     setoutlisthtml += '<th><th>'
     setoutlisthtml += '</tr>';
-    $.each(stockselected, function (i) {
+    $.each(setoutlist.stock, function (i) {
         setoutlisthtml += '<tr>';
-        setoutlisthtml += '<td>' + stockselected[i].desc + '</td>';
-        setoutlisthtml += '<td>' + stockselected[i].type + '</td>';
-        setoutlisthtml += '<td>' + stockselected[i].marking + '</td>';
-        setoutlisthtml += '<td>' + locationspots[i].desc + '</td>';
-        setoutlisthtml += '<tr>';
+        setoutlisthtml += '<td>' + rollingstock[Number(this)].desc + '</td>';
+        setoutlisthtml += '<td>' + rollingstock[Number(this)].type + '</td>';
+        setoutlisthtml += '<td>' + rollingstock[Number(this)].marking + '</td>';
+        setoutlisthtml += '<td>' + locationspots[setoutlist.locations[i]].desc + '</td>';
+        setoutlisthtml += '</tr>';
     })
     setoutlisthtml += '</tbody>';
-    return setoutlisthtml;
-}
+    setoutlisthtml += '</table>';
 
-function setswitchlisthtml(stockselected, locationspots) {
     var switchlisthtml = '';
     switchlisthtml += '<h3>Switch List ' + switchlistcounter + '</h3>';
     switchlisthtml += '<table id="switchlist">';
@@ -331,19 +315,17 @@ function setswitchlisthtml(stockselected, locationspots) {
     switchlisthtml += '<th>Marking</th>';
     switchlisthtml += '<th><th>'
     switchlisthtml += '</tr>';
-    $.each(stockselected, function (i) {
+    $.each(switchlist.stock, function (i) {
         switchlisthtml += '<tr>';
-        switchlisthtml += '<td>' + stockselected[i].desc + '</td>';
-        switchlisthtml += '<td>' + stockselected[i].type + '</td>';
-        switchlisthtml += '<td>' + stockselected[i].marking + '</td>';
-        switchlisthtml += '<td>' + locationspots[i].desc + '</td>';
-        switchlisthtml += '<tr>';
+        switchlisthtml += '<td>' + rollingstock[Number(this)].desc + '</td>';
+        switchlisthtml += '<td>' + rollingstock[Number(this)].type + '</td>';
+        switchlisthtml += '<td>' + rollingstock[Number(this)].marking + '</td>';
+        switchlisthtml += '<td>' + locationspots[switchlist.locations[i]].desc + '</td>';
+        switchlisthtml += '</tr>';
     })
     switchlisthtml += '</tbody>';
-    return switchlisthtml;
-}
+    switchlisthtml += '</table>';
 
-function sessionhtml(setoutlisthtml, switchlisthtml) {
     $('#session').html('<h1>Session ' + sessioncounter + '</h1>');
     $('#session').append(setoutlisthtml).trigger('create');
     $('#session').append(switchlisthtml).trigger('create');
@@ -364,8 +346,6 @@ function sessionhtml(setoutlisthtml, switchlisthtml) {
     })
 
     $('tbody tr').click(function () {
-        console.log($(this).css('background-color'))
-
         if ($(this).css('background-color') == 'rgb(243, 243, 21)') {
             $(this).css('background-color', '#F9F9F9');
         } else {
@@ -391,8 +371,8 @@ function savepoint() {
     }
 }
 
-function shuffle(array, elements) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+function shuffle(array) {
+    var currentIndex = ObjectLength(array), temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
@@ -406,5 +386,23 @@ function shuffle(array, elements) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-    return array.slice(0, elements);
+    return array;
 }
+
+function createNumberArray(n) {
+    var numberarray = [];
+    for (var i = 0; i < n; i++) {
+        numberarray[numberarray.length] = i;
+    }
+    return numberarray;
+}
+
+function ObjectLength(object) {
+    var length = 0;
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            ++length;
+        }
+    }
+    return length;
+};

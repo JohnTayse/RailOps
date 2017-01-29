@@ -1,130 +1,192 @@
-{"industries":[
-		{"desc":"Harbor",
+{
+  "industries": {
+    "1": {
+      "id": "1",
+      "desc": "Harbor",
       "spots": 3
-		},
-		{"desc":"Engine Shed",
-			"spots":3
-		},
-		{"desc":"Cargo Station",
-			"spots":2
-		},
-		{"desc":"Aggregate Depot",
-			"spots":1
-		},
-		{"desc":"Harbor Siding",
-			"spots":1
-		},
-		{"desc":"Wind Farm",
-			"spots":2
-		}
-	],
-"locomotives":[
-		{"desc":"Emerald Night",
+    },
+    "2": {
+      "id": "2",
+      "desc": "Engine Shed",
+      "spots": 3
+    },
+    "3": {
+      "id": "3",
+      "desc": "Cargo Station",
+      "spots": 2
+    },
+    "4": {
+      "id": "4",
+      "desc": "Aggregate Depot",
+      "spots": 1
+    },
+    "5":{
+      "id": "5",
+      "desc": "Harbor Siding",
+      "spots": 1
+    },
+    "6": {
+      "id": "6",
+      "desc": "Wind Farm",
+      "spots": 2
+    }
+  },
+  "locomotives": {
+    "1": {
+      "id": "1",
+      "desc": "Emerald Night",
       "number": 10194,
-      "marking": "LP"
-		},
-		{"desc":"Maersk Line",
+      "marking": "LP",
+      "type": "pf"
+    },
+    "2": {
+      "id": "2",
+      "desc": "Maersk Line",
       "number": 10219,
-      "marking": "ML"
-		},
-		{"desc":"City Cargo",
+      "marking": "ML",
+      "type": "pf"
+    },
+    "3": {
+      "id": "3",
+      "desc": "City Cargo",
       "number": 600052,
-      "marking": "CC"
-		},
-		{"desc":"City Cargo",
+      "marking": "CC",
+      "type": "pf"
+    },
+    "4": {
+      "id": "4",
+      "desc": "City Cargo",
       "number": 4512,
-      "marking": "CC"
-		},
-		{"desc":"Basal Hamburg",
+      "marking": "CC",
+      "type": "9v"
+    },
+    "5": {
+      "id": "5",
+      "desc": "Basal Hamburg",
       "number": 7760,
-      "marking": "BH"
-		}
-	],
-"rollingstock":[
-		{"desc":"Secure Boxcar",
+      "marking": "BH",
+      "type": "9v"
+    }
+  },
+  "rollingstock": {
+    "1": {
+      "id": "1",
+      "desc": "Secure Boxcar",
       "type": "boxcar",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Flatcar with Backhoe",
+    },
+    "2": {
+      "id": "2",
+      "desc": "Flatcar with Backhoe",
       "type": "flatcar",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Long Flatcar with Grader",
+    },
+    "3": {
+      "id": "3",
+      "desc": "Long Flatcar with Grader",
       "type": "flatcar",
       "marking": "LF",
       "spots": 1
-		},
-		{"desc":"Well with 2 Large, 2 Small 4-wides",
+    },
+    "4": {
+      "id": "4",
+      "desc": "Well with 2 Large, 2 Small 4-wides",
       "type": "well",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Well with Reefer",
+    },
+    "5": {
+      "id": "5",
+      "desc": "Well with Reefer",
       "type": "well",
       "marking": "ML",
       "spots": 1
-		},
-		{"desc":"Well with Engine",
+    },
+    "6": {
+      "id": "6",
+      "desc": "Well with Engine",
       "type": "well",
       "marking": "ML",
       "spots": 1
-		},
-		{"desc":"Open-top Hopper",
+    },
+    "7": {
+      "id": "7",
+      "desc": "Open-top Hopper",
       "type": "hopper",
       "marking": "LF",
       "spots": 1
-		},
-		{"desc":"Octan Tanker",
+    },
+    "8": {
+      "id": "8",
+      "desc": "Octan Tanker",
       "type": "tanker",
       "marking": "LF",
       "spots": 1
-		},
-		{"desc":"Autorack",
+    },
+    "9": {
+      "id": "9",
+      "desc": "Autorack",
       "type": "specialized",
       "marking": "LF",
       "spots": 1
-		},
-		{"desc":"Intermodal well 7 & 8",
+    },
+    "10": {
+      "id": "10",
+      "desc": "Intermodal well 7 & 8",
       "type": "well",
       "marking": "TTX",
       "spots": 2
-		},
-		{"desc":"Caboose",
+    },
+    "11": {
+      "id": "11",
+      "desc": "Caboose",
       "type": "aux",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Small open-top Hopper",
+    },
+    "12": {
+      "id": "12",
+      "desc": "Small open-top Hopper",
       "type": "hopper",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Flatcar with 3 pallets",
+    },
+    "13": {
+      "id": "13",
+      "desc": "Flatcar with 3 pallets",
       "type": "flatcar",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Flatcar with 2 6-wides",
+    },
+    "14": {
+      "id": "14",
+      "desc": "Flatcar with 2 6-wides",
       "type": "flatcar",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Flatcar with 2 6-wides (blue)",
+    },
+    "15": {
+      "id": "15",
+      "desc": "Flatcar with 2 6-wides (blue)",
       "type": "flatcar",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Small Octan Tanker",
+    },
+    "16": {
+      "id": "16",
+      "desc": "Small Octan Tanker",
       "type": "tanker",
       "marking": "CC",
       "spots": 1
-		},
-		{"desc":"Passenger Coach",
+    },
+    "17": {
+      "id": "17",
+      "desc": "Passenger Coach",
       "type": "passenger",
       "marking": "LP",
       "spots": 1
-		}
-  ]
+    }
+  }
 }
