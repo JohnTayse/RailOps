@@ -14,8 +14,10 @@ var rollingstockOrder = [];
 
 $(function()
 {
-    //localStorage.setItem("sessioncounter", 0);  //to reset session counter
     $('.controls').hide();
+    if (!hasSessionToResume()) {
+        $('#seshresume').hide();
+    }
     getRRInfo();
 });
 
@@ -43,8 +45,6 @@ function getRRInfo(){
 		fillOrderObject(locomotiveOrder, locomotives);
 		fillOrderObject(rollingstockOrder, rollingstock);
 
-		console.log(industryOrder);
-
 		pagesetup();
 
 		$.mobile.loading('hide');
@@ -65,7 +65,7 @@ function pagesetup() {
     controls3 += '<fieldset data-role="controlgroup">';
     controls3 += '<legend>Select Number of Locomotives:</legend>';
     $.each(locomotives, function (i) {
-        controls3 += '<label><input type="radio" name="locomotives" value="' + (i + 1) + '" />' + (i + 1) + '</label>';
+        controls3 += '<label><input type="radio" name="locomotives" value="' + (Number(i) + 1) + '" />' + (Number(i) + 1) + '</label>';
     })
 
     controls3 += '</fieldset>';
@@ -103,6 +103,12 @@ function setbuttons() {
         } else {
             startQuickSession();
         }
+    })
+    $('#btnSettings').click(function () {
+        $('#controls1').hide();
+        $('#settings').show();
+
+        settingssetup();
     })
     $('#backto1').click(function () {
         $('#controls2').hide();
@@ -184,6 +190,42 @@ function control4setup() {
 
 }
 
+function settingssetup() {
+    var settings = '';
+    settings += '<a href="#" class="ui-btn ui-corner-all" id="resetseshcount">Reset Session Count</a>';
+    settings += '<a href="#" class="ui-btn ui-corner-all" id="resetcurrentsesh">Reset Current Session</a>';
+    settings += '<a href="#" class="ui-btn ui-corner-all" id="settingsbackto1">Home</a>';
+
+    $('#settings').html(settings).trigger('create');
+
+    if (!hasSessionToResume()) {
+        $('#resetcurrentsesh').hide();
+    }
+
+    $('#resetseshcount').click(function () {
+        if (confirm('This action will reset the session counter which cannot be undone. Continue?')) {
+            localStorage.setItem("sessioncounter", 0);
+            sessioncounter = 1;
+            $('#session h1').html('Session ' + sessioncounter);
+        }
+    })
+
+    $('#resetcurrentsesh').click(function () {
+        if (confirm('This action will reset the current session which cannot be undone. Continue?')) {
+            localStorage.removeItem("setoutlist");
+            localStorage.removeItem("switchlist");
+            localStorage.removeItem("switchlistcounter");
+            $('#seshresume').hide();
+            $('#resetcurrentsesh').hide();
+        }
+    })
+
+    $('#settingsbackto1').click(function () {
+        $('#controls1').show();
+        $('#settings').hide();
+    })
+}
+
 function startQuickSession() {
     //quick session at easy difficulty with 1 locomotives
     $('#controls1').hide();
@@ -255,7 +297,7 @@ function nextswitchlist() {
 
 function resumeSession() {
     if (typeof (Storage) !== "undefined") {
-        if (localStorage.getItem("setoutlist") !== null && localStorage.getItem("switchlist") !== null && localStorage.getItem("sessioncounter") !== null && localStorage.getItem("switchlistcounter") !== null) {
+        if (hasSessionToResume() && localStorage.getItem("sessioncounter") !== null) {
             $('#session').hide();
             setoutlist = JSON.parse(localStorage.getItem("setoutlist"));
             switchlist = JSON.parse(localStorage.getItem("switchlist"));
@@ -269,6 +311,10 @@ function resumeSession() {
             localstoragealerted = true;
         }
     }
+}
+
+function hasSessionToResume() {
+    return localStorage.getItem("setoutlist") !== null && localStorage.getItem("switchlist") !== null && localStorage.getItem("switchlistcounter") !== null
 }
 
 function sessionhtml() {
@@ -290,9 +336,9 @@ function sessionhtml() {
     setoutlisthtml += '</tr>';
     $.each(setoutlist.stock, function (i) {
         setoutlisthtml += '<tr>';
-        setoutlisthtml += '<td>' + rollingstock[Number(this)].desc + '</td>';
-        setoutlisthtml += '<td>' + rollingstock[Number(this)].type + '</td>';
-        setoutlisthtml += '<td>' + rollingstock[Number(this)].marking + '</td>';
+        setoutlisthtml += '<td>' + rollingstock[this].desc + '</td>';
+        setoutlisthtml += '<td>' + rollingstock[this].type + '</td>';
+        setoutlisthtml += '<td>' + rollingstock[this].marking + '</td>';
         setoutlisthtml += '<td>' + locationspots[setoutlist.locations[i]].desc + '</td>';
         setoutlisthtml += '</tr>';
     })
@@ -317,9 +363,9 @@ function sessionhtml() {
     switchlisthtml += '</tr>';
     $.each(switchlist.stock, function (i) {
         switchlisthtml += '<tr>';
-        switchlisthtml += '<td>' + rollingstock[Number(this)].desc + '</td>';
-        switchlisthtml += '<td>' + rollingstock[Number(this)].type + '</td>';
-        switchlisthtml += '<td>' + rollingstock[Number(this)].marking + '</td>';
+        switchlisthtml += '<td>' + rollingstock[this].desc + '</td>';
+        switchlisthtml += '<td>' + rollingstock[this].type + '</td>';
+        switchlisthtml += '<td>' + rollingstock[this].marking + '</td>';
         switchlisthtml += '<td>' + locationspots[switchlist.locations[i]].desc + '</td>';
         switchlisthtml += '</tr>';
     })
@@ -359,6 +405,8 @@ function sessionhtml() {
 function savepoint() {
     //saves session settings to local storage
     if (typeof (Storage) !== "undefined") {
+        $('#seshresume').show();
+
         localStorage.setItem("setoutlist", JSON.stringify(setoutlist));
         localStorage.setItem("switchlist", JSON.stringify(switchlist));
         localStorage.setItem("sessioncounter", sessioncounter);
