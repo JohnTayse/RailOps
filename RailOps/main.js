@@ -6,7 +6,7 @@ var difficulty;
 var locos;
 var locosselected = [];
 var setoutlist, switchlist;
-var sessioncounter = 1;
+var sessioncounter = 0;
 var switchlistcounter = 1;
 var industryOrder = [];
 var locomotiveOrder = [];
@@ -14,6 +14,8 @@ var rollingstockOrder = [];
 
 $(function()
 {
+    $('#currentyear').html(new Date().getFullYear());
+
     $('.controls').hide();
     if (!hasSessionToResume()) {
         $('#seshresume').hide();
@@ -204,9 +206,15 @@ function settingssetup() {
 
     $('#resetseshcount').click(function () {
         if (confirm('This action will reset the session counter which cannot be undone. Continue?')) {
-            localStorage.setItem("sessioncounter", 0);
-            sessioncounter = 1;
-            $('#session h1').html('Session ' + sessioncounter);
+            if (hasSessionToResume) {
+                sessioncounter = 1;
+                $('#session h1').html('Session ' + sessioncounter);
+                localStorage.setItem("sessioncounter", sessioncounter);
+            } else {
+                sessioncounter = 0;
+                localStorage.removeItem("sessioncounter");
+            }
+
         }
     })
 
@@ -256,8 +264,8 @@ function setupSession() {
 
     //todo something with the locomotive(s)
 
-    var setoutstock = shuffle(createNumberArray(ObjectLength(rollingstock))).slice(0, numberofstock);
-    var setoutlocations = shuffle(createNumberArray(ObjectLength(locationspots)));
+    var setoutstock = shuffle(createStockArray(ObjectLength(rollingstock))).slice(0, numberofstock);
+    var setoutlocations = shuffle(createLocationArray(ObjectLength(locationspots)));
 
     setoutlist = {
         "stock": setoutstock,
@@ -265,15 +273,12 @@ function setupSession() {
     };
 
     var switchstock = shuffle(setoutlist.stock.slice());
-    var switchlocations = shuffle(createNumberArray(ObjectLength(locationspots)));
+    var switchlocations = shuffle(createLocationArray(ObjectLength(locationspots)));
 
     switchlist = {
         "stock": switchstock,
         "locations": switchlocations
-    };   
-
-    console.log(setoutlist);
-    console.log(switchlist);
+    };
 
     sessionhtml();
     $('#session').show();
@@ -284,7 +289,7 @@ function nextswitchlist() {
     setoutlist = switchlist;
 
     var switchstock = shuffle(setoutlist.stock.slice());
-    var switchlocations = shuffle(createNumberArray(ObjectLength(locationspots)));
+    var switchlocations = shuffle(createLocationArray(ObjectLength(locationspots)));
 
     switchlist = {
         "stock": switchstock,
@@ -437,7 +442,15 @@ function shuffle(array) {
     return array;
 }
 
-function createNumberArray(n) {
+function createStockArray(n) {
+    var numberarray = [];
+    for (var i = 1; i <= n; i++) {
+        numberarray[numberarray.length] = i;
+    }
+    return numberarray;
+}
+
+function createLocationArray(n) {
     var numberarray = [];
     for (var i = 0; i < n; i++) {
         numberarray[numberarray.length] = i;
