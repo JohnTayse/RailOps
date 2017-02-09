@@ -11,9 +11,17 @@ var switchlistcounter = 1;
 var industryOrder = [];
 var locomotiveOrder = [];
 var rollingstockOrder = [];
+var isMobileDevice;
+var jsontext;
 
 $(function()
 {
+    isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobileDevice) {
+        $('.controls').css('width', '45%');
+    }
+
     $('#currentyear').html(new Date().getFullYear());
 
     $('.controls').hide();
@@ -26,6 +34,7 @@ $(function()
 function getRRInfo(){
 	$.mobile.loading('show');
 	$.getJSON('rrinfo.json', function (json) {
+	    jsontext = JSON.stringify(json);
 	    industries = json.industries;
 	    locomotives = json.locomotives;
 	    rollingstock = json.rollingstock;
@@ -196,6 +205,7 @@ function settingssetup() {
     var settings = '';
     settings += '<a href="#" class="ui-btn ui-corner-all" id="resetseshcount">Reset Session Count</a>';
     settings += '<a href="#" class="ui-btn ui-corner-all" id="resetcurrentsesh">Reset Current Session</a>';
+    settings += '<a href="#" class="ui-btn ui-corner-all" id="datamanager">Data Manager</a>';
     settings += '<a href="#" class="ui-btn ui-corner-all" id="settingsbackto1">Home</a>';
 
     $('#settings').html(settings).trigger('create');
@@ -228,9 +238,121 @@ function settingssetup() {
         }
     })
 
+    $('#datamanager').click(function () {
+        $('#datamanagement').show();
+        $('#settings').hide();
+
+        datamanagersetup();
+    })
+
     $('#settingsbackto1').click(function () {
         $('#controls1').show();
         $('#settings').hide();
+    })
+}
+
+var itemtype = 'industries';
+function datamanagersetup() {
+    var datamanagement = '';
+
+    //1. switch between industries/locomotive/rollingstock
+    datamanagement += '<div id="typeswitchnav" data-role="navbar">';
+    datamanagement += '<ul>';
+    datamanagement += '<li><a href="#" id="switchindustries" class="ui-btn-active">Industries</a></li>';
+    datamanagement += '<li><a href="#" id="switchlocomotives">Locomotives</a></li>';
+    datamanagement += '<li><a href="#" id="switchrollingstock">Rolling Stock</a></li>';
+    datamanagement += '</ul>';
+    datamanagement += '</div>';
+    //2. input boxes
+    //2a. industries
+    datamanagement += '<div id="inputsindustries">';
+    datamanagement += '<input type="text" name="industrydesc" id="industrydesc" value="" placeholder="Description">';
+    datamanagement += '<input type="text" name="industryspots" id="industryspots" value="" placeholder="# of Spots">';
+    datamanagement += '</div>';
+    //2b. locomotives
+    datamanagement += '<div id="inputslocomotives">';
+    datamanagement += '<input type="text" name="locodesc" id="locodesc" value="" placeholder="Description">';
+    datamanagement += '<input type="text" name="loconumber" id="loconumber" value="" placeholder="Number">';
+    datamanagement += '<input type="text" name="locomark" id="locomark" value="" placeholder="Reporting Mark">';
+    datamanagement += '<select name="locotype" id="locotype" data-role="slider">';
+    datamanagement += '<option value="ninev">9V</option>';
+    datamanagement += '<option value="pf">PF</option>';
+    datamanagement += '</select>';
+    datamanagement += '</div>';
+    //2c. rollingstock
+    datamanagement += '<div id="inputsrollingstock">';
+    datamanagement += '<input type="text" name="rsdesc" id="rsdesc" value="" placeholder="Description">';
+
+    datamanagement += '<label for="rstype" class="select"></label>';
+    datamanagement += '<select name="rstype" id="rstype">';
+    datamanagement += '<option>--Stock Type--</option>';
+    datamanagement += '<option value="auxiliary">Auxiliary</option>';
+    datamanagement += '<option value="boxcar">Boxcar</option>';
+    datamanagement += '<option value="flatcar">Flatcar</option>';
+    datamanagement += '<option value="gondola">Gondola</option>';
+    datamanagement += '<option value="hopper">Hopper</option>';
+    datamanagement += '<option value="passenger">Passenger</option>';
+    datamanagement += '<option value="specialized">Specialized</option>';
+    datamanagement += '<option value="tanker">Tanker</option>';
+    datamanagement += '<option value="well">Well</option>';
+    datamanagement += '</select>';
+    
+    datamanagement += '<input type="text" name="rsmark" id="rsmark" value="" placeholder="Reporting Mark">';
+    datamanagement += '<input type="text" name="rsspots" id="rsspots" value="" placeholder="Spots">';
+    datamanagement += '</div>';
+    //2. add button
+    datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btnadditem">Add Item</a>';
+
+    //3. json text area
+    datamanagement += '<textarea cols="40" rows="8" name="jsontext" id="jsontext">' + jsontext + '</textarea>';
+    //4. copy to clipboard
+    datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btncopy">Copy To Clipboard</a>';
+    //5. instructions
+    datamanagement += '<p>Once you have finished adding items, click copy to clipboard. Then in the RailOps folder, open the <code>rrinfo.json</code> file in a text editor, select all [<code>CTRL + A</code> or <code>CMD + A</code>], and paste [<code>CTRL + V</code> or <code>CMD + V</code>]. Save the file and reload RailOps.</p>';
+
+    datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="backtosettings">Back to Settings</a>';
+
+    $('#datamanagement').html(datamanagement).trigger('create');
+
+    $('#inputslocomotives').hide();
+    $('#inputsrollingstock').hide();
+
+    $('#switchindustries').click(function () {
+        itemtype = 'industries';
+        $('#inputsindustries').show();
+        $('#inputslocomotives').hide();
+        $('#inputsrollingstock').hide();
+    })
+    $('#switchlocomotives').click(function () {
+        itemtype = 'locomotives';
+        $('#inputsindustries').hide();
+        $('#inputslocomotives').show();
+        $('#inputsrollingstock').hide();
+    })
+    $('#switchrollingstock').click(function () {
+        itemtype = 'rollingstock';
+        $('#inputsindustries').hide();
+        $('#inputslocomotives').hide();
+        $('#inputsrollingstock').show();
+    })
+
+    $('#btnadditem').click(function () {
+        //todo add functionality
+    })
+
+    $('#btncopy').click(function () {
+        $('#jsontext').select();
+        try{
+            var successful = document.execCommand('copy');
+            console.log(successful);
+        } catch (err) {
+            window.prompt("Copy to clipboard: Ctrl+C, Enter", $('#jsontext').val());
+        }
+    })
+
+    $('#backtosettings').click(function () {
+        $('#settings').show();
+        $('#datamanager').hide();
     })
 }
 
