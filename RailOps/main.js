@@ -252,7 +252,12 @@ function settingssetup() {
 }
 
 var itemtype = 'industries';
+var industrycount = 0, lococount = 0, rscount = 0;
 function datamanagersetup() {
+    industrycount = ObjectLength(industries);
+    lococount = ObjectLength(locomotives);
+    rscount = ObjectLength(rollingstock);
+
     var datamanagement = '';
 
     //1. switch between industries/locomotive/rollingstock
@@ -275,7 +280,7 @@ function datamanagersetup() {
     datamanagement += '<input type="text" name="loconumber" id="loconumber" value="" placeholder="Number">';
     datamanagement += '<input type="text" name="locomark" id="locomark" value="" placeholder="Reporting Mark">';
     datamanagement += '<select name="locotype" id="locotype" data-role="slider">';
-    datamanagement += '<option value="ninev">9V</option>';
+    datamanagement += '<option value="9v">9V</option>';
     datamanagement += '<option value="pf">PF</option>';
     datamanagement += '</select>';
     datamanagement += '</div>';
@@ -310,6 +315,7 @@ function datamanagersetup() {
     //5. instructions
     datamanagement += '<p>Once you have finished adding items, click copy to clipboard. Then in the RailOps folder, open the <code>rrinfo.json</code> file in a text editor, select all [<code>CTRL + A</code> or <code>CMD + A</code>], and paste [<code>CTRL + V</code> or <code>CMD + V</code>]. Save the file and reload RailOps.</p>';
 
+    datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="datareload">Reload Page</a>';
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="backtosettings">Back to Settings</a>';
 
     $('#datamanagement').html(datamanagement).trigger('create');
@@ -337,7 +343,42 @@ function datamanagersetup() {
     })
 
     $('#btnadditem').click(function () {
-        //todo add functionality
+        //todo insert into textarea [jsontext]
+        var jsontoinsert = $('#jsontext').html();
+
+        if (itemtype == 'industries') {
+            industrycount++;
+
+            var industryinsert = ',"' + industrycount + '": {"id": "' + industrycount + '","desc": "' + $('#industrydesc').val() + '","spots": ' + $('#industryspots').val() + '}';
+            jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('},"locomotives":{"')) + industryinsert + jsontoinsert.slice(jsontoinsert.indexOf('},"locomotives":{"'));
+
+            $('#industrydesc').val('');
+            $('#industryspots').val('');
+        }
+        if (itemtype == 'locomotives') {
+            lococount++;
+
+            var locoinsert = ',"' + lococount + '": {"id": "' + lococount + '", "desc": "' + $('#locodesc').val() + '", "number": ' + $('#loconumber').val() + ', "marking": "' + $('#locomark').val() + '", "type": "' + $('#locotype').val() + '"}';
+            jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('},"rollingstock":{"')) + locoinsert + jsontoinsert.slice(jsontoinsert.indexOf('},"rollingstock":{"'));
+
+            $('#locodesc').val('');
+            $('#loconumber').val('');
+            $('#locomark').val('');
+            $('#locotype').val('');
+        }
+        if (itemtype == 'rollingstock') {
+            rscount++;
+
+            var rsinsert = ',"' + rscount + '": {"id": "' + rscount + '", "desc": "' + $('#rsdesc').val() + '", "type": "' + $('#rstype').val() + '", "marking": "' + $('#rsmark').val() + '", "spots": ' + $('#rsspots').val() + '}';
+            jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('}}}') + 1) + rsinsert + jsontoinsert.slice(jsontoinsert.indexOf('}}}') + 1);
+
+            $('#rsdesc').val('');
+            $('#rstype').val('');
+            $('#rsmark').val('');
+            $('#rsspots').val('');
+        }
+
+        $('#jsontext').html(jsontoinsert);
     })
 
     $('#btncopy').click(function () {
@@ -348,6 +389,10 @@ function datamanagersetup() {
         } catch (err) {
             window.prompt("Copy to clipboard: Ctrl+C, Enter", $('#jsontext').val());
         }
+    })
+
+    $('#datareload').click(function () {
+        window.location.reload(true);
     })
 
     $('#backtosettings').click(function () {
