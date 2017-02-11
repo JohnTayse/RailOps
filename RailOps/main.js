@@ -309,7 +309,7 @@ function datamanagersetup() {
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btnadditem">Add Item</a>';
 
     //3. json text area
-    datamanagement += '<textarea cols="40" rows="8" name="jsontext" id="jsontext">' + jsontext + '</textarea>';
+    datamanagement += '<textarea cols="40" rows="1" name="jsontext" id="jsontext">' + jsontext + '</textarea>';
     //4. copy to clipboard
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btncopy">Copy To Clipboard</a>';
     //5. instructions
@@ -364,7 +364,7 @@ function datamanagersetup() {
             $('#locodesc').val('');
             $('#loconumber').val('');
             $('#locomark').val('');
-            $('#locotype').val('');
+            $('#locotype').val(0).slider('refresh');
         }
         if (itemtype == 'rollingstock') {
             rscount++;
@@ -373,7 +373,8 @@ function datamanagersetup() {
             jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('}}}') + 1) + rsinsert + jsontoinsert.slice(jsontoinsert.indexOf('}}}') + 1);
 
             $('#rsdesc').val('');
-            $('#rstype').val('');
+            $('#rstype')[0].selectedIndex = 0;
+            $('#rstype').selectmenu('refresh');
             $('#rsmark').val('');
             $('#rsspots').val('');
         }
@@ -397,7 +398,7 @@ function datamanagersetup() {
 
     $('#backtosettings').click(function () {
         $('#settings').show();
-        $('#datamanager').hide();
+        $('#datamanagement').hide();
     })
 }
 
