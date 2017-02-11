@@ -18,8 +18,9 @@ $(function()
 {
     isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    if (isMobileDevice) {
-        $('.controls').css('width', '45%');
+    if (!isMobileDevice) {
+        $('.controls').css('width', '25%');
+        $('.controls').css('margin-left', '37.5%');
     }
 
     $('#currentyear').html(new Date().getFullYear());
@@ -260,6 +261,16 @@ function datamanagersetup() {
 
     var datamanagement = '';
 
+    //switch between Create/Update/Delete
+    datamanagement += '<div id="crudswitchnav" data-role="navbar">';
+    datamanagement += '<ul>';
+    datamanagement += '<li><a href="#" id="switchcreate" class="ui-btn-active">Add New</a></li>';
+    datamanagement += '<li><a href="#" id="switchupdate">Edit Current</a></li>';
+    datamanagement += '<li><a href="#" id="switchdelete">Delete Current</a></li>';
+    datamanagement += '</ul>';
+    datamanagement += '</div>';
+    datamanagement += '<br/>';
+
     //1. switch between industries/locomotive/rollingstock
     datamanagement += '<div id="typeswitchnav" data-role="navbar">';
     datamanagement += '<ul>';
@@ -268,6 +279,9 @@ function datamanagersetup() {
     datamanagement += '<li><a href="#" id="switchrollingstock">Rolling Stock</a></li>';
     datamanagement += '</ul>';
     datamanagement += '</div>';
+
+    datamanagement += '<div class="inputs">';
+    datamanagement += '<div id="viewcreate">';
     //2. input boxes
     //2a. industries
     datamanagement += '<div id="inputsindustries">';
@@ -307,18 +321,49 @@ function datamanagersetup() {
     datamanagement += '</div>';
     //2. add button
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btnadditem">Add Item</a>';
+    datamanagement += '</div>';
 
     //3. json text area
     datamanagement += '<textarea cols="40" rows="1" name="jsontext" id="jsontext">' + jsontext + '</textarea>';
     //4. copy to clipboard
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btncopy">Copy To Clipboard</a>';
+    datamanagement += '</div>';
     //5. instructions
     datamanagement += '<p>Once you have finished adding items, click copy to clipboard. Then in the RailOps folder, open the <code>rrinfo.json</code> file in a text editor, select all [<code>CTRL + A</code> or <code>CMD + A</code>], and paste [<code>CTRL + V</code> or <code>CMD + V</code>]. Save the file and reload RailOps.</p>';
 
+    datamanagement += '<div class="inputs">';
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="datareload">Reload Page</a>';
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="backtosettings">Back to Settings</a>';
+    datamanagement += '</div>';
 
     $('#datamanagement').html(datamanagement).trigger('create');
+
+    if (!isMobileDevice) {
+        $('#datamanagement').css('width', '50%');
+        $('#datamanagement').css('margin-left', '25%');
+
+        $('.inputs').css('width', '45%');
+        $('.inputs').css('margin-left', '27.5%');
+    }
+
+    $('#viewupdate').hide();
+    $('#viewdelete').hide();
+
+    $('#switchcreate').click(function () {
+        $('#viewcreate').show();
+        $('#viewupdate').hide();
+        $('#viewdelete').hide();
+    })
+    $('#switchupdate').click(function (){
+        $('#viewcreate').hide();
+        $('#viewupdate').show();
+        $('#viewdelete').hide();
+    })
+    $('#switchdelete').click(function (){
+        $('#viewcreate').hide();
+        $('#viewupdate').hide();
+        $('#viewdelete').show();
+    })
 
     $('#inputslocomotives').hide();
     $('#inputsrollingstock').hide();
@@ -550,10 +595,17 @@ function sessionhtml() {
     $('#session').append(switchlisthtml).trigger('create');
 
     var seshcontrols = '';
+    seshcontrols += '<div id="seshcontrols" class="controls">';
     seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
     seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
+    seshcontrols += '</div>';
 
     $('#session').append(seshcontrols).trigger('create');
+
+    if (!isMobileDevice) {
+        $('.controls').css('width', '25%');
+        $('.controls').css('margin-left', '37.5%');
+    }
 
     $('#nextsl').click(function () {
         nextswitchlist();
