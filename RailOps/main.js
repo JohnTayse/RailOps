@@ -77,7 +77,7 @@ function pagesetup() {
     controls3 += '<fieldset data-role="controlgroup">';
     controls3 += '<legend>Select Number of Locomotives:</legend>';
     $.each(locomotives, function (i) {
-        controls3 += '<label><input type="radio" name="locomotives" value="' + (Number(i) + 1) + '" />' + (Number(i) + 1) + '</label>';
+        controls3 += '<label><input type="radio" name="locomotives" value="' + (Number(i) + 1) + '" />' + i + '</label>';
     })
 
     controls3 += '</fieldset>';
@@ -265,8 +265,7 @@ function datamanagersetup() {
     datamanagement += '<div id="crudswitchnav" data-role="navbar">';
     datamanagement += '<ul>';
     datamanagement += '<li><a href="#" id="switchcreate" class="ui-btn-active">Add New</a></li>';
-    datamanagement += '<li><a href="#" id="switchupdate">Edit Current</a></li>';
-    datamanagement += '<li><a href="#" id="switchdelete">Delete Current</a></li>';
+    datamanagement += '<li><a href="#" id="switchupdatedelete">Edit/Delete Current</a></li>';
     datamanagement += '</ul>';
     datamanagement += '</div>';
     datamanagement += '<br/>';
@@ -280,15 +279,49 @@ function datamanagersetup() {
     datamanagement += '</ul>';
     datamanagement += '</div>';
 
-    datamanagement += '<div class="inputs">';
-    datamanagement += '<div id="viewcreate">';
     //2. input boxes
-    //2a. industries
+    datamanagement += '<div class="inputs">';
+
+    //dropdowns
+    datamanagement += '<div id="datadropdowns">';
+    datamanagement += '<div id="dropdownindustries">';
+    datamanagement += '<label for="industriesud" class="select"></label>';
+    datamanagement += '<select name="industriesud" id="industriesud">';
+    datamanagement += '<option>--Choose Industry--</option>';
+    $.each(industries, function (i) {
+        var industry = this;
+        datamanagement += '<option value="' + industry.id + '">' + industry.desc + '</option>';
+    })
+    datamanagement += '</select>';
+    datamanagement += '</div>';
+    datamanagement += '<div id="dropdownlocomotives">';
+    datamanagement += '<label for="locomotivesud" class="select"></label>';
+    datamanagement += '<select name="locomotivesud" id="locomotivesud">';
+    datamanagement += '<option>--Choose Locomotive--</option>';
+    $.each(locomotives, function (i) {
+        var locomotive = this;
+        datamanagement += '<option value="' + locomotive.id + '">' + locomotive.desc + '</option>';
+    })
+    datamanagement += '</select>';
+    datamanagement += '</div>';
+    datamanagement += '<div id="dropdownrollingstock">';
+    datamanagement += '<label for="rollingstockud" class="select"></label>';
+    datamanagement += '<select name="rollingstockud" id="rollingstockud">';
+    datamanagement += '<option>--Choose Rolling Stock--</option>';
+    $.each(rollingstock, function (i) {
+        var stock = this;
+        datamanagement += '<option value="' + stock.id + '">' + stock.desc + '</option>';
+    })
+    datamanagement += '</select>';
+    datamanagement += '</div>';
+    datamanagement += '</div>';
+
+    //industries
     datamanagement += '<div id="inputsindustries">';
     datamanagement += '<input type="text" name="industrydesc" id="industrydesc" value="" placeholder="Description">';
     datamanagement += '<input type="text" name="industryspots" id="industryspots" value="" placeholder="# of Spots">';
     datamanagement += '</div>';
-    //2b. locomotives
+    //locomotives
     datamanagement += '<div id="inputslocomotives">';
     datamanagement += '<input type="text" name="locodesc" id="locodesc" value="" placeholder="Description">';
     datamanagement += '<input type="text" name="loconumber" id="loconumber" value="" placeholder="Number">';
@@ -298,7 +331,7 @@ function datamanagersetup() {
     datamanagement += '<option value="pf">PF</option>';
     datamanagement += '</select>';
     datamanagement += '</div>';
-    //2c. rollingstock
+    //rollingstock
     datamanagement += '<div id="inputsrollingstock">';
     datamanagement += '<input type="text" name="rsdesc" id="rsdesc" value="" placeholder="Description">';
 
@@ -319,8 +352,16 @@ function datamanagersetup() {
     datamanagement += '<input type="text" name="rsmark" id="rsmark" value="" placeholder="Reporting Mark">';
     datamanagement += '<input type="text" name="rsspots" id="rsspots" value="" placeholder="Spots">';
     datamanagement += '</div>';
-    //2. add button
+
+    //add button
+    datamanagement += '<div id="viewcreate">';
     datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btnadditem">Add Item</a>';
+    datamanagement += '</div>';
+
+    //update/delete button
+    datamanagement += '<div id="viewupdatedelete">';
+    datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btnupdateitem">Update Item</a>';
+    datamanagement += '<a href="#" class="ui-btn ui-corner-all" id="btndeleteitem">Delete Item</a>';
     datamanagement += '</div>';
 
     //3. json text area
@@ -346,85 +387,325 @@ function datamanagersetup() {
         $('.inputs').css('margin-left', '27.5%');
     }
 
-    $('#viewupdate').hide();
-    $('#viewdelete').hide();
+    $('#datadropdowns').hide();
+    $('#viewupdatedelete').hide();
 
     $('#switchcreate').click(function () {
         $('#viewcreate').show();
-        $('#viewupdate').hide();
-        $('#viewdelete').hide();
+        $('#viewupdatedelete').hide();
+        $('#datadropdowns').hide();
+
+        resetIndustry();
+        resetLocomotive();
+        resetRollingstock();
     })
-    $('#switchupdate').click(function (){
+    $('#switchupdatedelete').click(function (){
         $('#viewcreate').hide();
-        $('#viewupdate').show();
-        $('#viewdelete').hide();
-    })
-    $('#switchdelete').click(function (){
-        $('#viewcreate').hide();
-        $('#viewupdate').hide();
-        $('#viewdelete').show();
+        $('#viewupdatedelete').show();
+        $('#datadropdowns').show();
+
+        switch (itemtype){
+            case 'industries':
+                industryClick();
+                break;
+            case 'locomotives':
+                locomotiveClick();
+                break;
+            case 'rollingstock':
+                rollingstockClick();
+                break;
+            default:
+                industryClick();
+                break;
+        }
     })
 
     $('#inputslocomotives').hide();
     $('#inputsrollingstock').hide();
 
     $('#switchindustries').click(function () {
+        industryClick();
+    })
+
+    function industryClick(){
         itemtype = 'industries';
         $('#inputsindustries').show();
         $('#inputslocomotives').hide();
         $('#inputsrollingstock').hide();
-    })
+
+        $('#dropdownindustries').show();
+        $('#dropdownlocomotives').hide();
+        $('#dropdownrollingstock').hide();
+
+        //reset form
+        $('#industriesud')[0].selectedIndex = 0;
+        $('#industriesud').selectmenu('refresh');
+        resetIndustry();
+    }
+
+    function resetIndustry(){
+        $('#industrydesc').val('');
+        $('#industryspots').val('');
+    }
+
     $('#switchlocomotives').click(function () {
+        locomotiveClick();
+    })
+
+    function locomotiveClick(){
         itemtype = 'locomotives';
         $('#inputsindustries').hide();
         $('#inputslocomotives').show();
         $('#inputsrollingstock').hide();
-    })
+
+        $('#dropdownindustries').hide();
+        $('#dropdownlocomotives').show();
+        $('#dropdownrollingstock').hide();
+
+        //reset form
+        $('#locomotivesud')[0].selectedIndex = 0;
+        $('#locomotivesud').selectmenu('refresh');
+        resetLocomotive();
+    }
+
+    function resetLocomotive(){
+        $('#locodesc').val('');
+        $('#loconumber').val('');
+        $('#locomark').val('');
+        $('#locotype')[0].selectedIndex = 0;
+        $('#locotype').slider('refresh');
+    }
+
     $('#switchrollingstock').click(function () {
+        rollingstockClick();
+    })
+
+    function rollingstockClick(){
         itemtype = 'rollingstock';
         $('#inputsindustries').hide();
         $('#inputslocomotives').hide();
         $('#inputsrollingstock').show();
+
+        $('#dropdownindustries').hide();
+        $('#dropdownlocomotives').hide();
+        $('#dropdownrollingstock').show();
+
+        //reset form
+        $('#rollingstockud')[0].selectedIndex = 0;
+        $('#rollingstockud').selectmenu('refresh');
+        resetRollingstock();
+    }
+
+    function resetRollingstock(){
+        $('#rsdesc').val('');
+        $('#rstype')[0].selectedIndex = 0;
+        $('#rstype').selectmenu('refresh');
+        $('#rsmark').val('');
+        $('#rsspots').val('');
+    }
+
+    //on selects
+    $('#industriesud').change(function(){
+        var industry = industries[$('#industriesud').val()];
+        $('#industrydesc').val(industry.desc);
+        $('#industryspots').val(industry.spots);
+    })
+    $('#locomotivesud').change(function(){
+        var locomotive = locomotives[$('#locomotivesud').val()];
+        $('#locodesc').val(locomotive.desc);
+        $('#loconumber').val(locomotive.number);
+        $('#locomark').val(locomotive.marking);
+        $('#locotype').val(locomotive.type);
+        $('#locotype').slider('refresh');
+    })
+    $('#rollingstockud').change(function(){
+        var stock = rollingstock[$('#rollingstockud').val()];
+        $('#rsdesc').val(stock.desc);
+        $('#rstype').val(stock.type)
+        $('#rstype').selectmenu('refresh');
+        $('#rsmark').val(stock.marking);
+        $('#rsspots').val(stock.spots);
     })
 
     $('#btnadditem').click(function () {
-        //todo insert into textarea [jsontext]
-        var jsontoinsert = $('#jsontext').html();
-
         if (itemtype == 'industries') {
             industrycount++;
 
-            var industryinsert = ',"' + industrycount + '": {"id": "' + industrycount + '","desc": "' + $('#industrydesc').val() + '","spots": ' + $('#industryspots').val() + '}';
-            jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('},"locomotives":{"')) + industryinsert + jsontoinsert.slice(jsontoinsert.indexOf('},"locomotives":{"'));
+            var newIndustry = {};
+            newIndustry.id = industrycount;
+            newIndustry.desc = $('#industrydesc').val();
+            newIndustry.spots = parseInt($('#industryspots').val());
 
-            $('#industrydesc').val('');
-            $('#industryspots').val('');
+            industries['' + industrycount] = newIndustry;
+
+            resetIndustry();
         }
         if (itemtype == 'locomotives') {
             lococount++;
 
-            var locoinsert = ',"' + lococount + '": {"id": "' + lococount + '", "desc": "' + $('#locodesc').val() + '", "number": ' + $('#loconumber').val() + ', "marking": "' + $('#locomark').val() + '", "type": "' + $('#locotype').val() + '"}';
-            jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('},"rollingstock":{"')) + locoinsert + jsontoinsert.slice(jsontoinsert.indexOf('},"rollingstock":{"'));
+            var newLocomotive = {};
+            newLocomotive.id = lococount;
+            newLocomotive.desc = $('#locodesc').val();
+            newLocomotive.number = parseInt($('#loconumber').val());
+            newLocomotive.marking = $('#locomark').val();
+            newLocomotive.type = $('#locotype').val();
 
-            $('#locodesc').val('');
-            $('#loconumber').val('');
-            $('#locomark').val('');
-            $('#locotype').val(0).slider('refresh');
+            locomotives['' + lococount] = newLocomotive;
+
+            resetLocomotive();
         }
         if (itemtype == 'rollingstock') {
             rscount++;
 
-            var rsinsert = ',"' + rscount + '": {"id": "' + rscount + '", "desc": "' + $('#rsdesc').val() + '", "type": "' + $('#rstype').val() + '", "marking": "' + $('#rsmark').val() + '", "spots": ' + $('#rsspots').val() + '}';
-            jsontoinsert = jsontoinsert.slice(0, jsontoinsert.indexOf('}}}') + 1) + rsinsert + jsontoinsert.slice(jsontoinsert.indexOf('}}}') + 1);
+            var newRS = {};
+            newRS.id = rscount;
+            newRS.desc = $('#rsdesc').val();
+            newRS.type = $('#rstype').val();
+            newRS.marking = $('#rsmark').val();
+            newRS.spots = parseInt($('#rsspots').val());
 
-            $('#rsdesc').val('');
-            $('#rstype')[0].selectedIndex = 0;
-            $('#rstype').selectmenu('refresh');
-            $('#rsmark').val('');
-            $('#rsspots').val('');
+            rollingstock['' + rscount] = newRS;
+
+            resetRollingstock();
         }
+        
+        $('#jsontext').html('{"industries":' + JSON.stringify(industries) + ',"locomotives":' + JSON.stringify(locomotives) + ',"rollingstock":' + JSON.stringify(rollingstock) + '}');
+    })
 
-        $('#jsontext').html(jsontoinsert);
+    $('#btnupdateitem').click(function () {
+        if (itemtype == 'industries') {
+            var industryupdate = parseInt($('#industriesud').val());
+
+            var updatedIndustry = {};
+            updatedIndustry.id = '' + industryupdate;
+            updatedIndustry.desc = $('#industrydesc').val();
+            updatedIndustry.spots = parseInt($('#industryspots').val());
+
+            industries['' + industryupdate] = updatedIndustry;
+
+            $('#industriesud')[0].selectedIndex = 0;
+            $('#industriesud').selectmenu('refresh');
+
+            resetIndustry();
+        }
+        if (itemtype == 'locomotives') {
+            var locoupdate = parseInt($('#locomotivesud').val());
+
+            var updatedLocomotive = {};
+            updatedLocomotive.id = '' + locoupdate;
+            updatedLocomotive.desc = $('#locodesc').val();
+            updatedLocomotive.number = parseInt($('#loconumber').val());
+            updatedLocomotive.marking = $('#locomark').val();
+            updatedLocomotive.type = $('#locotype').val();
+
+            locomotives['' + locoupdate] = updatedLocomotive;
+            
+            $('#locomotivesud')[0].selectedIndex = 0;
+            $('#locomotivesud').selectmenu('refresh');
+
+            resetLocomotive();
+        }
+        if (itemtype == 'rollingstock') {
+            var rsupdate = parseInt($('#rollingstockud').val());
+
+            var updatedRS = {};
+            updatedRS.id = '' + rsupdate;
+            updatedRS.desc = $('#rsdesc').val();
+            updatedRS.type = $('#rstype').val();
+            updatedRS.marking = $('#rsmark').val();
+            updatedRS.spots = parseInt($('#rsspots').val());
+
+            rollingstock['' + rsupdate] = updatedRS;
+
+            $('#rollingstockud')[0].selectedIndex = 0;
+            $('#rollingstockud').selectmenu('refresh');
+
+            resetRollingstock();
+        }
+        
+        $('#jsontext').html('{"industries":' + JSON.stringify(industries) + ',"locomotives":' + JSON.stringify(locomotives) + ',"rollingstock":' + JSON.stringify(rollingstock) + '}');
+    })
+
+    $('#btndeleteitem').click(function(){
+        if (itemtype == 'industries') {
+            if(!confirm('Are you sure you would like to delete ' + $('#industriesud option[value=' + $('#industriesud').val() + ']').text() + ' from your industries?')){
+                return;
+            }
+            var industrydelete = parseInt($('#industriesud').val());
+            delete industries['' + industrydelete];
+
+            for(var i = industrydelete; i < industrycount; i++){
+                industries['' + i] = industries['' + (i + 1)];
+                industries['' + i].id = '' + i;
+            }
+            delete industries['' + industrycount];
+
+            industrycount--;
+
+            //remove from dropdown
+            $('#industriesud option[value=' + industrydelete + ']').remove();
+            //update values in dropdown
+            for(var j = industrydelete; j < industrycount + 1; j++){
+                $('#industriesud option[value=' + (j + 1) + ']').val('' + j + '');
+            }
+
+            $('#industriesud')[0].selectedIndex = 0;
+            $('#industriesud').selectmenu('refresh');
+            resetIndustry();
+        }
+        if (itemtype == 'locomotives') {
+            if(!confirm('Are you sure you would like to delete ' + $('#locomotivesud option[value=' + $('#locomotivesud').val() + ']').text() + ' from your locomotives?')){
+                return;
+            }
+            var locomotivedelete = parseInt($('#locomotivesud').val());
+            delete locomotives['' + locomotivedelete];
+
+            for(var i = locomotivedelete; i < lococount; i++){
+                locomotives['' + i] = locomotives['' + (i + 1)];
+                locomotives['' + i].id = '' + i;
+            }
+            delete locomotives['' + lococount];
+
+            lococount--;
+
+            //remove from dropdown
+            $('#locomotivesud option[value=' + locomotivedelete + ']').remove();
+            //update values in dropdown
+            for(var j = locomotivedelete; j < lococount + 1; j++){
+                $('#locomotivesud option[value=' + (j + 1) + ']').val('' + j + '');
+            }
+
+            $('#locomotivesud')[0].selectedIndex = 0;
+            $('#locomotivesud').selectmenu('refresh');
+            resetLocomotive();
+        }
+        if (itemtype == 'rollingstock') {
+            if(!confirm('Are you sure you would like to delete ' + $('#rollingstockud option[value=' + $('#rollingstockud').val() + ']').text() + ' from your rolling stock?')){
+                return;
+            }
+            var rsdelete = parseInt($('#rollingstockud').val());
+            delete rollingstock['' + rsdelete];
+
+            for(var i = rsdelete; i < rscount; i++){
+                rollingstock['' + i] = rollingstock['' + (i + 1)];
+                rollingstock['' + i].id = '' + i;
+            }
+            delete rollingstock['' + rscount];
+
+            rscount--;
+
+            //remove from dropdown
+            $('#rollingstockud option[value=' + rsdelete + ']').remove();
+            //update values in dropdown
+            for(var j = rsdelete; j < rscount + 1; j++){
+                $('#rollingstockud option[value=' + (j + 1) + ']').val('' + j + '');
+            }
+
+            $('#rollingstockud')[0].selectedIndex = 0;
+            $('#rollingstockud').selectmenu('refresh');
+            resetRollingstock();
+        }
+        $('#jsontext').html('{"industries":' + JSON.stringify(industries) + ',"locomotives":' + JSON.stringify(locomotives) + ',"rollingstock":' + JSON.stringify(rollingstock) + '}');
     })
 
     $('#btncopy').click(function () {
