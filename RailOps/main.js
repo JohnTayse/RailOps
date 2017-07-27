@@ -5,7 +5,7 @@ var stock;
 var difficulty;
 var locos;
 var locosselected = [];
-var setoutlist, switchlist;
+var setoutlist, switchlist, sessionlists;
 var sessioncounter = 0;
 var switchlistcounter = 1;
 var industryOrder = [];
@@ -774,21 +774,49 @@ function setupSession() {
         "locations": switchlocations
     };
 
+    var sessionlist = {};
+    sessionlist.id = switchlistcounter;
+    sessionlist.setout = setoutlist;
+    sessionlist.switch = switchlist;
+    sessionlists = {};
+    sessionlists[switchlistcounter] = sessionlist;
+
     sessionhtml();
     $('#session').show();
 }
 
 function nextswitchlist() {
     switchlistcounter++;
-    setoutlist = switchlist;
+    if(sessionlists[switchlistcounter] !== undefined) {
+        var sessionlist = sessionlists[switchlistcounter];
+        setoutlist = sessionlist.setout;
+        switchlist = sessionlist.switch;
+    } else {
+        setoutlist = switchlist;
 
-    var switchstock = shuffle(setoutlist.stock.slice());
-    var switchlocations = shuffle(createLocationArray(ObjectLength(locationspots)));
+        var switchstock = shuffle(setoutlist.stock.slice());
+        var switchlocations = shuffle(createLocationArray(ObjectLength(locationspots)));
 
-    switchlist = {
-        "stock": switchstock,
-        "locations": switchlocations
-    };
+        switchlist = {
+            "stock": switchstock,
+            "locations": switchlocations
+        };
+
+        var sessionlist = {};
+        sessionlist.id = switchlistcounter;
+        sessionlist.setout = setoutlist;
+        sessionlist.switch = switchlist;
+        sessionlists[switchlistcounter] = sessionlist;
+    }
+    sessionhtml();
+    $('#session').show();
+}
+
+function prevswitchlist() {
+    switchlistcounter--;
+    var sessionlist = sessionlists[switchlistcounter];
+    setoutlist = sessionlist.setout;
+    switchlist = sessionlist.switch;
 
     sessionhtml();
     $('#session').show();
@@ -800,6 +828,7 @@ function resumeSession() {
             $('#session').hide();
             setoutlist = JSON.parse(localStorage.getItem("setoutlist"));
             switchlist = JSON.parse(localStorage.getItem("switchlist"));
+            sessionlists = JSON.parse(localStorage.getItem("sessionlists"));
             sessioncounter = localStorage.getItem("sessioncounter");
             switchlistcounter = localStorage.getItem("switchlistcounter");
             sessionhtml();
@@ -878,6 +907,9 @@ function sessionhtml() {
     var seshcontrols = '';
     seshcontrols += '<div id="seshcontrols" class="controls">';
     seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="nextsl">Next Switch List</a>';
+    if(switchlistcounter > 1){
+        seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="prevsl">Previous Switch List</a>';
+    }
     seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
     seshcontrols += '</div>';
 
@@ -890,6 +922,10 @@ function sessionhtml() {
 
     $('#nextsl').click(function () {
         nextswitchlist();
+    })
+
+    $('#prevsl').click(function () {
+        prevswitchlist();
     })
 
     $('#seshbackto1').click(function () {
@@ -915,11 +951,12 @@ function savepoint() {
 
         localStorage.setItem("setoutlist", JSON.stringify(setoutlist));
         localStorage.setItem("switchlist", JSON.stringify(switchlist));
+        localStorage.setItem("sessionlists", JSON.stringify(sessionlists));
         localStorage.setItem("sessioncounter", sessioncounter);
         localStorage.setItem("switchlistcounter", switchlistcounter);
     } else {
         if (localstoragealerted !== true) {
-            alert('Local storage not available. Sessions will not be saved.');
+            alert('Local storage not available. Sessions will not be saved!');
             localstoragealerted = true;
         }
     }
