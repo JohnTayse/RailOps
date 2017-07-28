@@ -77,7 +77,7 @@ function pagesetup() {
     controls3 += '<fieldset data-role="controlgroup">';
     controls3 += '<legend>Select Number of Locomotives:</legend>';
     $.each(locomotives, function (i) {
-        controls3 += '<label><input type="radio" name="locomotives" value="' + (Number(i) + 1) + '" />' + i + '</label>';
+        controls3 += '<label><input type="radio" name="locomotives" value="' + (Number(i)) + '" />' + i + '</label>';
     })
 
     controls3 += '</fieldset>';
@@ -96,7 +96,6 @@ function setbuttons() {
             if (confirm('Starting a new session will delete your current session. Are you sure you would like to start a new session?')) {
                 $('#controls1').hide();
                 $('#controls2').show();
-                //todo uncheck previous selection
             }
         } else {
             $('#controls1').hide();
@@ -123,10 +122,12 @@ function setbuttons() {
         settingssetup();
     })
     $('#backto1').click(function () {
+        $("input[name=difficulty]").attr("checked",false).checkboxradio("refresh");
         $('#controls2').hide();
         $('#controls1').show();
     })
     $('#backto2').click(function () {
+        $("input[name=locomotives]").attr("checked",false).checkboxradio("refresh");
         $('#controls3').hide();
         $('#controls2').show();
     })
@@ -151,7 +152,7 @@ function control4setup() {
     //select locomotives or random selection->start session
     var controls4 = '';
     controls4 += '<fieldset data-role="controlgroup">';
-    controls4 += '<legend>Select Number of Locomotives:</legend>';
+    controls4 += '<legend>Select Session Locomotives:</legend>';
 
     var checkboxorradio = ''
     if (locos > 1) {
@@ -171,6 +172,7 @@ function control4setup() {
     $('#controls4').html(controls4).trigger('create');
 
     $('#backto3').click(function () {
+        $("input[name=locos]").attr("checked",false).checkboxradio("refresh");
         $('#controls4').hide();
         $('#controls3').show();
     })
@@ -179,8 +181,11 @@ function control4setup() {
         var selectlocos = $('input[name=locos]:checked');
 
         if (selectlocos.length != locos) {
-            alert('You have selected ' + selectlocos.length + ' locomotives but only chose to run ' + locos + ' this session. Either adjust your locomotive selection or go back and modify the number of locomotives you would like to run.');
+            alert('You have selected ' + selectlocos.length + ' locomotives but chose to run ' + locos + ' this session. Either adjust your locomotive selection or go back and modify the number of locomotives you would like to run.');
         } else {
+            $("input[name=difficulty]").attr("checked",false).checkboxradio("refresh");
+            $("input[name=locomotives]").attr("checked",false).checkboxradio("refresh");
+            $("input[name=locos]").attr("checked",false).checkboxradio("refresh");
             $('#controls4').hide();
 
             //get locos into locosselected
@@ -233,6 +238,7 @@ function settingssetup() {
         if (confirm('This action will reset the current session which cannot be undone. Continue?')) {
             localStorage.removeItem("setoutlist");
             localStorage.removeItem("switchlist");
+            localStorage.removeItem("sessionlists");
             localStorage.removeItem("switchlistcounter");
             $('#seshresume').hide();
             $('#resetcurrentsesh').hide();
