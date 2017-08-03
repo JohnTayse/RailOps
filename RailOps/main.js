@@ -62,7 +62,7 @@ function getRRInfo(){
 
 		$.mobile.loading('hide');
 
-		$('#controls1').show();
+		$('#controlsHome').show();
     });
 }
 
@@ -73,7 +73,6 @@ function fillOrderObject(orderArray, orderObject){
 }
 
 function pagesetup() {
-    //Contols RS Custom, custom rolling stock selection
     var controlsRSCustom = '';
     controlsRSCustom += '<fieldset data-role="controlgroup">';
     controlsRSCustom += '<legend>Select the Rolling Stock for the session:</legend>';
@@ -81,23 +80,22 @@ function pagesetup() {
         controlsRSCustom += '<label><input type="checkbox" name="customRS" value="' + (Number(i)) + '" />' + this.marking + '-' + this.desc + ' (' + this.type + ')</label>';
     })
     controlsRSCustom += '</fieldset>';
-    controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all" id="continueto3">Continue</a>';
-    controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all backto2">Back</a>';
+    controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all" id="continuetoLocoNumber">Continue</a>';
+    controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all backtoDifficulty">Back</a>';
 
     $('#controlsRSCustom').html(controlsRSCustom).trigger('create');
 
-    //Controls 3, number of locomotives
-    var controls3 = '';
-    controls3 += '<fieldset data-role="controlgroup">';
-    controls3 += '<legend>Select Number of Locomotives:</legend>';
+    var controlsLocoNumber = '';
+    controlsLocoNumber += '<fieldset data-role="controlgroup">';
+    controlsLocoNumber += '<legend>Select Number of Locomotives:</legend>';
     $.each(locomotives, function (i) {
-        controls3 += '<label><input type="radio" name="locomotives" value="' + (Number(i)) + '" />' + i + '</label>';
+        controlsLocoNumber += '<label><input type="radio" name="locomotives" value="' + (Number(i)) + '" />' + i + '</label>';
     })
 
-    controls3 += '</fieldset>';
-    controls3 += '<a href="#" class="ui-btn ui-corner-all backto2">Back</a>';
+    controlsLocoNumber += '</fieldset>';
+    controlsLocoNumber += '<a href="#" class="ui-btn ui-corner-all backtoDifficulty">Back</a>';
 
-    $('#controls3').html(controls3).trigger('create');
+    $('#controlsLocoNumber').html(controlsLocoNumber).trigger('create');
 
     resumeSession();
 
@@ -108,16 +106,16 @@ function setbuttons() {
     $('#seshnew').click(function () {
         if ($('#session').html().length > 0) {
             if (confirm('Starting a new session will delete your current session. Are you sure you would like to start a new session?')) {
-                $('#controls1').hide();
-                $('#controls2').show();
+                $('#controlsHome').hide();
+                $('#controlsDifficulty').show();
             }
         } else {
-            $('#controls1').hide();
-            $('#controls2').show();
+            $('#controlsHome').hide();
+            $('#controlsDifficulty').show();
         }
     })
     $('#seshresume').click(function () {
-        $('#controls1').hide();
+        $('#controlsHome').hide();
         $('#session').show();
     })
     $('#seshquick').click(function () {
@@ -130,25 +128,25 @@ function setbuttons() {
         }
     })
     $('#btnSettings').click(function () {
-        $('#controls1').hide();
+        $('#controlsHome').hide();
         $('#settings').show();
 
         settingssetup();
     })
-    $('#backto1').click(function () {
+    $('#backtoHome').click(function () {
         $("input[name=difficulty]").attr("checked",false).checkboxradio("refresh");
-        $('#controls2').hide();
-        $('#controls1').show();
+        $('#controlsDifficulty').hide();
+        $('#controlsHome').show();
     })
-    $('.backto2').click(function () {
+    $('.backtoDifficulty').click(function () {
         $("input[name=customRS]").attr("checked", false).checkboxradio("refresh");
         $("input[name=locomotives]").attr("checked",false).checkboxradio("refresh");
         $('#controlsRSCustom').hide();
-        $('#controls3').hide();
-        $('#controls2').show();
+        $('#controlsLocoNumber').hide();
+        $('#controlsDifficulty').show();
     })
 
-    $('#continueto3').click(function(){
+    $('#continuetoLocoNumber').click(function(){
         var selectedRS = $('input[name=customRS]:checked');
         rsselected = [];
         $.each(selectedRS, function(){
@@ -156,35 +154,34 @@ function setbuttons() {
         })
         
         $('#controlsRSCustom').hide();
-        $('#controls3').show();
+        $('#controlsLocoNumber').show();
     })
 
     $('input[name="difficulty"]').change(function () {
         difficulty = $('input[name=difficulty]:checked').val();
         if(difficulty == "custom"){
-            $('#controls2').hide();
+            $('#controlsDifficulty').hide();
             $('#controlsRSCustom').show();
         } else {
-            $('#controls2').hide();
-            $('#controls3').show();
+            $('#controlsDifficulty').hide();
+            $('#controlsLocoNumber').show();
         }
     })
 
     $('input[name="locomotives"]').change(function () {
         locos = $('input[name=locomotives]:checked').val();
-        $('#controls3').hide();
+        $('#controlsLocoNumber').hide();
 
-        control4setup();
+        controlLocomotivesSetup();
 
-        $('#controls4').show();
+        $('#controlsLocomotives').show();
     })
 }
 
-function control4setup() {
-    //select locomotives or random selection->start session
-    var controls4 = '';
-    controls4 += '<fieldset data-role="controlgroup">';
-    controls4 += '<legend>Select Session Locomotives:</legend>';
+function controlLocomotivesSetup() {
+    var controlsLocomotives = '';
+    controlsLocomotives += '<fieldset data-role="controlgroup">';
+    controlsLocomotives += '<legend>Select Session Locomotives:</legend>';
 
     var checkboxorradio = ''
     if (locos > 1) {
@@ -194,19 +191,19 @@ function control4setup() {
     }
 
     $.each(locomotives, function (i) {
-        controls4 += '<label><input type="' + checkboxorradio + '" name="locos" marking="' + this.marking + '" number="' + this.number + '" desc="' + this.desc + '"/>' + this.marking + ' #' + this.number + ' | ' + this.desc + '</label>';
+        controlsLocomotives += '<label><input type="' + checkboxorradio + '" name="locos" marking="' + this.marking + '" number="' + this.number + '" desc="' + this.desc + '"/>' + this.marking + ' #' + this.number + ' | ' + this.desc + '</label>';
     })
 
-    controls4 += '</fieldset>';
-    controls4 += '<a href="#" class="ui-btn ui-corner-all" id="startsesh">Start Session!</a>';
-    controls4 += '<a href="#" class="ui-btn ui-corner-all" id="backto3">Back</a>';
+    controlsLocomotives += '</fieldset>';
+    controlsLocomotives += '<a href="#" class="ui-btn ui-corner-all" id="startsesh">Start Session!</a>';
+    controlsLocomotives += '<a href="#" class="ui-btn ui-corner-all" id="backtoLocoNumber">Back</a>';
 
-    $('#controls4').html(controls4).trigger('create');
+    $('#controlsLocomotives').html(controlsLocomotives).trigger('create');
 
-    $('#backto3').click(function () {
+    $('#backtoLocoNumber').click(function () {
         $("input[name=locos]").attr("checked",false).checkboxradio("refresh");
-        $('#controls4').hide();
-        $('#controls3').show();
+        $('#controlsLocomotives').hide();
+        $('#controlsLocoNumber').show();
     })
 
     $('#startsesh').click(function () {
@@ -219,7 +216,7 @@ function control4setup() {
             $("input[name=customRS]").attr("checked", false).checkboxradio("refresh");
             $("input[name=locomotives]").attr("checked",false).checkboxradio("refresh");
             $("input[name=locos]").attr("checked",false).checkboxradio("refresh");
-            $('#controls4').hide();
+            $('#controlsLocomotives').hide();
 
             //get locos into locosselected
             $.each(selectlocos, function () {
@@ -245,7 +242,7 @@ function settingssetup() {
     settings += '<a href="#" class="ui-btn ui-corner-all" id="resetseshcount">Reset Session Count</a>';
     settings += '<a href="#" class="ui-btn ui-corner-all" id="resetcurrentsesh">Reset Current Session</a>';
     settings += '<a href="#" class="ui-btn ui-corner-all" id="datamanager">Data Manager</a>';
-    settings += '<a href="#" class="ui-btn ui-corner-all" id="settingsbackto1">Home</a>';
+    settings += '<a href="#" class="ui-btn ui-corner-all" id="settingsbacktoHome">Home</a>';
 
     $('#settings').html(settings).trigger('create');
 
@@ -285,8 +282,8 @@ function settingssetup() {
         datamanagersetup();
     })
 
-    $('#settingsbackto1').click(function () {
-        $('#controls1').show();
+    $('#settingsbacktoHome').click(function () {
+        $('#controlsHome').show();
         $('#settings').hide();
     })
 }
@@ -769,7 +766,7 @@ function datamanagersetup() {
 
 function startQuickSession() {
     //quick session at easy difficulty with 1 locomotives
-    $('#controls1').hide();
+    $('#controlsHome').hide();
     difficulty = "easy";
     locos = 1;
     locosselected = shuffle(locomotives)[0];
@@ -960,7 +957,7 @@ function sessionhtml() {
     if(switchlistcounter > 1){
         seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="prevsl">Previous Switch List</a>';
     }
-    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbackto1">Home</a>';
+    seshcontrols += '<a href="#" class="ui-btn ui-corner-all" id="seshbacktoHome">Home</a>';
     seshcontrols += '</div>';
 
     $('#session').append(seshcontrols).trigger('create');
@@ -978,8 +975,8 @@ function sessionhtml() {
         prevswitchlist();
     })
 
-    $('#seshbackto1').click(function () {
-        $('#controls1').show();
+    $('#seshbacktoHome').click(function () {
+        $('#controlsHome').show();
         $('#session').hide();
     })
 
@@ -995,7 +992,6 @@ function sessionhtml() {
 }
 
 function savepoint() {
-    //saves session settings to local storage
     if (typeof (Storage) !== "undefined") {
         $('#seshresume').show();
 
