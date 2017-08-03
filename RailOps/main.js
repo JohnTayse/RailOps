@@ -5,6 +5,7 @@ var stock;
 var difficulty;
 var locos;
 var locosselected = [];
+var rsselected = [];
 var setoutlist, switchlist, sessionlists;
 var sessioncounter = 0;
 var switchlistcounter = 1;
@@ -72,6 +73,19 @@ function fillOrderObject(orderArray, orderObject){
 }
 
 function pagesetup() {
+    //Contols RS Custom, custom rolling stock selection
+    var controlsRSCustom = '';
+    controlsRSCustom += '<fieldset data-role="controlgroup">';
+    controlsRSCustom += '<legend>Select the Rolling Stock for the session:</legend>';
+    $.each(rollingstock, function(i){
+        controlsRSCustom += '<label><input type="checkbox" name="customRS" value="' + (Number(i)) + '" />' + this.marking + '-' + this.desc + ' (' + this.type + ')</label>';
+    })
+    controlsRSCustom += '</fieldset>';
+    controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all" id="continueto3">Continue</a>';
+    controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all backto2">Back</a>';
+
+    $('#controlsRSCustom').html(controlsRSCustom).trigger('create');
+
     //Controls 3, number of locomotives
     var controls3 = '';
     controls3 += '<fieldset data-role="controlgroup">';
@@ -81,7 +95,7 @@ function pagesetup() {
     })
 
     controls3 += '</fieldset>';
-    controls3 += '<a href="#" class="ui-btn ui-corner-all" id="backto2">Back</a>';    
+    controls3 += '<a href="#" class="ui-btn ui-corner-all backto2">Back</a>';
 
     $('#controls3').html(controls3).trigger('create');
 
@@ -126,16 +140,34 @@ function setbuttons() {
         $('#controls2').hide();
         $('#controls1').show();
     })
-    $('#backto2').click(function () {
+    $('.backto2').click(function () {
+        $("input[name=customRS]").attr("checked", false).checkboxradio("refresh");
         $("input[name=locomotives]").attr("checked",false).checkboxradio("refresh");
+        $('#controlsRSCustom').hide();
         $('#controls3').hide();
         $('#controls2').show();
     })
 
-    $('input[name="difficulty"]').change(function () {
-        var difficulty = $('input[name=difficulty]:checked').val();
-        $('#controls2').hide();
+    $('#continueto3').click(function(){
+        var selectedRS = $('input[name=customRS]:checked');
+        rsselected = [];
+        $.each(selectedRS, function(){
+            rsselected.push(rollingstock['' + this.value]);
+        })
+        
+        $('#controlsRSCustom').hide();
         $('#controls3').show();
+    })
+
+    $('input[name="difficulty"]').change(function () {
+        difficulty = $('input[name=difficulty]:checked').val();
+        if(difficulty == "custom"){
+            $('#controls2').hide();
+            $('#controlsRSCustom').show();
+        } else {
+            $('#controls2').hide();
+            $('#controls3').show();
+        }
     })
 
     $('input[name="locomotives"]').change(function () {
@@ -184,6 +216,7 @@ function control4setup() {
             alert('You have selected ' + selectlocos.length + ' locomotives but chose to run ' + locos + ' this session. Either adjust your locomotive selection or go back and modify the number of locomotives you would like to run.');
         } else {
             $("input[name=difficulty]").attr("checked",false).checkboxradio("refresh");
+            $("input[name=customRS]").attr("checked", false).checkboxradio("refresh");
             $("input[name=locomotives]").attr("checked",false).checkboxradio("refresh");
             $("input[name=locos]").attr("checked",false).checkboxradio("refresh");
             $('#controls4').hide();
@@ -763,8 +796,19 @@ function setupSession() {
     }
 
     //todo something with the locomotive(s)
+    //locosselected
 
-    var setoutstock = shuffle(createStockArray(ObjectLength(rollingstock))).slice(0, numberofstock);
+    var setoutstock = {};
+    if (difficulty == "custom") {
+        var stockarray = [];
+        $.each(rsselected, function(){
+            stockarray.push(this.id);
+        })
+        setoutstock = shuffle(stockarray);
+    } else {
+        setoutstock = shuffle(createStockArray(ObjectLength(rollingstock))).slice(0, numberofstock);
+    }
+    
     var setoutlocations = shuffle(createLocationArray(ObjectLength(locationspots)));
 
     setoutlist = {
