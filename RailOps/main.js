@@ -77,7 +77,7 @@ function pagesetup() {
     controlsRSCustom += '<fieldset data-role="controlgroup">';
     controlsRSCustom += '<legend>Select the Rolling Stock for the session:</legend>';
     $.each(rollingstock, function(i){
-        controlsRSCustom += '<label><input type="checkbox" name="customRS" value="' + (Number(i)) + '" />' + this.marking + '-' + this.desc + ' (' + this.type + ')</label>';
+        controlsRSCustom += '<label><input type="checkbox" name="customRS" value="' + (Number(i)) + '" />' + this.marking + ' #' + this.number + '-' + this.desc + ' (' + this.type + ')</label>';
     })
     controlsRSCustom += '</fieldset>';
     controlsRSCustom += '<a href="#" class="ui-btn ui-corner-all" id="continuetoLocoNumber">Continue</a>';
@@ -191,7 +191,7 @@ function controlLocomotivesSetup() {
     }
 
     $.each(locomotives, function (i) {
-        controlsLocomotives += '<label><input type="' + checkboxorradio + '" name="locos" marking="' + this.marking + '" number="' + this.number + '" desc="' + this.desc + '"/>' + this.marking + ' #' + this.number + ' | ' + this.desc + '</label>';
+        controlsLocomotives += '<label><input type="' + checkboxorradio + '" name="locos" value="' + (Number(i)) + '"/>' + this.marking + ' #' + this.number + ' | ' + this.desc + '</label>';
     })
 
     controlsLocomotives += '</fieldset>';
@@ -220,15 +220,7 @@ function controlLocomotivesSetup() {
 
             //get locos into locosselected
             $.each(selectlocos, function () {
-                var desc = $(this).attr('desc');
-                var number = $(this).attr('number');
-                var marking = $(this).attr('marking');
-                var loco = {
-                    "desc": desc,
-                    "number": number,
-                    "marking": marking
-                }
-                locosselected[locosselected.length] = loco;
+                locosselected.push(locomotives['' + this.value]);
             })
 
             setupSession();
@@ -360,11 +352,11 @@ function datamanagersetup() {
     //locomotives
     datamanagement += '<div id="inputslocomotives">';
     datamanagement += '<input type="text" name="locodesc" id="locodesc" value="" placeholder="Description">';
-    datamanagement += '<input type="text" name="loconumber" id="loconumber" value="" placeholder="Number">';
     datamanagement += '<input type="text" name="locomark" id="locomark" value="" placeholder="Reporting Mark">';
+    datamanagement += '<input type="text" name="loconumber" id="loconumber" value="" placeholder="Number">';
     datamanagement += '<select name="locotype" id="locotype" data-role="slider">';
-    datamanagement += '<option value="9v">9V</option>';
-    datamanagement += '<option value="pf">PF</option>';
+    datamanagement += '<option value="dcc">DCC</option>';
+    datamanagement += '<option value="dc">DC</option>';
     datamanagement += '</select>';
     datamanagement += '</div>';
     //rollingstock
@@ -374,18 +366,24 @@ function datamanagersetup() {
     datamanagement += '<label for="rstype" class="select"></label>';
     datamanagement += '<select name="rstype" id="rstype">';
     datamanagement += '<option>--Stock Type--</option>';
-    datamanagement += '<option value="auxiliary">Auxiliary</option>';
-    datamanagement += '<option value="boxcar">Boxcar</option>';
-    datamanagement += '<option value="flatcar">Flatcar</option>';
-    datamanagement += '<option value="gondola">Gondola</option>';
+    datamanagement += '<option value="auto">Auto Rack</option>';
+    datamanagement += '<option value="box">Box Car</option>';
+    datamanagement += '<option value="caboose">Caboose</option>';
+    datamanagement += '<option value="flat">Flat Car</option>';
+    datamanagement += '<option value="gondola">Gondola Car</option>';
     datamanagement += '<option value="hopper">Hopper</option>';
-    datamanagement += '<option value="passenger">Passenger</option>';
-    datamanagement += '<option value="specialized">Specialized</option>';
-    datamanagement += '<option value="tanker">Tanker</option>';
-    datamanagement += '<option value="well">Well</option>';
+    datamanagement += '<option value="intermodal">Intermodal</option>';
+    datamanagement += '<option value="log">Log Car</option>';
+    datamanagement += '<option value="mow">MOW</option>';
+    datamanagement += '<option value="passenger">Passenger Car</option>';
+    datamanagement += '<option value="reefer">Reefer</option>';
+    datamanagement += '<option value="steel">Steel Coil Car</option>';
+    datamanagement += '<option value="stock">Stock Car</option>';
+    datamanagement += '<option value="tank">Tank Car</option>';
     datamanagement += '</select>';
     
     datamanagement += '<input type="text" name="rsmark" id="rsmark" value="" placeholder="Reporting Mark">';
+    datamanagement += '<input type="text" name="rsnumber" id="rsnumber" value="" placeholder="Number">';
     datamanagement += '<input type="text" name="rsspots" id="rsspots" value="" placeholder="Spots">';
     datamanagement += '</div>';
 
@@ -537,6 +535,7 @@ function datamanagersetup() {
         $('#rstype')[0].selectedIndex = 0;
         $('#rstype').selectmenu('refresh');
         $('#rsmark').val('');
+        $('#rsnumber').val('');
         $('#rsspots').val('');
     }
 
@@ -549,8 +548,8 @@ function datamanagersetup() {
     $('#locomotivesud').change(function(){
         var locomotive = locomotives[$('#locomotivesud').val()];
         $('#locodesc').val(locomotive.desc);
-        $('#loconumber').val(locomotive.number);
         $('#locomark').val(locomotive.marking);
+        $('#loconumber').val(locomotive.number);
         $('#locotype').val(locomotive.type);
         $('#locotype').slider('refresh');
     })
@@ -560,6 +559,7 @@ function datamanagersetup() {
         $('#rstype').val(stock.type)
         $('#rstype').selectmenu('refresh');
         $('#rsmark').val(stock.marking);
+        $('#rsnumber').val(stock.number);
         $('#rsspots').val(stock.spots);
     })
 
@@ -582,8 +582,8 @@ function datamanagersetup() {
             var newLocomotive = {};
             newLocomotive.id = lococount;
             newLocomotive.desc = $('#locodesc').val();
-            newLocomotive.number = parseInt($('#loconumber').val());
             newLocomotive.marking = $('#locomark').val();
+            newLocomotive.number = parseInt($('#loconumber').val());
             newLocomotive.type = $('#locotype').val();
 
             locomotives['' + lococount] = newLocomotive;
@@ -598,6 +598,7 @@ function datamanagersetup() {
             newRS.desc = $('#rsdesc').val();
             newRS.type = $('#rstype').val();
             newRS.marking = $('#rsmark').val();
+            newRS.number = parseInt($('#rsnumber').val());
             newRS.spots = parseInt($('#rsspots').val());
 
             rollingstock['' + rscount] = newRS;
@@ -630,8 +631,8 @@ function datamanagersetup() {
             var updatedLocomotive = {};
             updatedLocomotive.id = '' + locoupdate;
             updatedLocomotive.desc = $('#locodesc').val();
-            updatedLocomotive.number = parseInt($('#loconumber').val());
             updatedLocomotive.marking = $('#locomark').val();
+            updatedLocomotive.number = parseInt($('#loconumber').val());
             updatedLocomotive.type = $('#locotype').val();
 
             locomotives['' + locoupdate] = updatedLocomotive;
@@ -649,6 +650,7 @@ function datamanagersetup() {
             updatedRS.desc = $('#rsdesc').val();
             updatedRS.type = $('#rstype').val();
             updatedRS.marking = $('#rsmark').val();
+            updatedRS.number = parseInt($('#rsnumber').val());
             updatedRS.spots = parseInt($('#rsspots').val());
 
             rollingstock['' + rsupdate] = updatedRS;
@@ -907,6 +909,7 @@ function sessionhtml() {
     setoutlisthtml += '<th>Desc</th>';
     setoutlisthtml += '<th>Type</th>';
     setoutlisthtml += '<th>Marking</th>';
+    setoutlisthtml += '<th>Number</th>';
     setoutlisthtml += '<th><th>'
     setoutlisthtml += '</tr>';
     $.each(setoutlist.stock, function (i) {
@@ -914,6 +917,7 @@ function sessionhtml() {
         setoutlisthtml += '<td>' + rollingstock[this].desc + '</td>';
         setoutlisthtml += '<td>' + rollingstock[this].type + '</td>';
         setoutlisthtml += '<td>' + rollingstock[this].marking + '</td>';
+        setoutlisthtml += '<td>' + rollingstock[this].number + '</td>';
         setoutlisthtml += '<td>' + locationspots[setoutlist.locations[i]].desc + '</td>';
         setoutlisthtml += '</tr>';
     })
@@ -934,6 +938,7 @@ function sessionhtml() {
     switchlisthtml += '<th>Desc</th>';
     switchlisthtml += '<th>Type</th>';
     switchlisthtml += '<th>Marking</th>';
+    switchlisthtml += '<th>Number</th>';
     switchlisthtml += '<th><th>'
     switchlisthtml += '</tr>';
     $.each(switchlist.stock, function (i) {
@@ -941,6 +946,7 @@ function sessionhtml() {
         switchlisthtml += '<td>' + rollingstock[this].desc + '</td>';
         switchlisthtml += '<td>' + rollingstock[this].type + '</td>';
         switchlisthtml += '<td>' + rollingstock[this].marking + '</td>';
+        switchlisthtml += '<td>' + rollingstock[this].number + '</td>';
         switchlisthtml += '<td>' + locationspots[switchlist.locations[i]].desc + '</td>';
         switchlisthtml += '</tr>';
     })
