@@ -1,0 +1,45 @@
+<div class="modal fade" id="addIndustryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="addIndustryModalLabel">Add Industry</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="addIndustryForm">
+					<div>
+						<label for="industryInput" class="form-label text-start">Industry Name</label>
+						<input type="text" class="form-control" id="industryInput" placeholder="Grain Elevator">
+
+						<label for="descriptionInput" class="form-label text-start">Description</label>
+						<input type="text" class="form-control" id="descriptionInput" placeholder="Six grain silos">
+
+						<label for="spotsInput" class="form-label text-start">Spots</label>
+						<input type="number" class="form-control" id="spotsInput" value=1 >
+
+						<label for="layoutSelect" class="form-label text-start">Layout</label>
+						<select id="layoutSelect" class="form-select" aria-label="Layout Select">
+							<option selected>Choose a layout</option>
+						</select>
+
+						<label for="color1Input" class="form-label text-start">Color 1</label>
+						<input type="color" class="form-control" id="color1Input" value="#ffffff">
+
+						<label for="color2Input" class="form-label text-start">Color 2</label>
+						<input type="color" class="form-control" id="color2Input" value="#000000">
+
+						<label for="notesText" class="form-label text-start">Notes</label>
+						<textarea type="textarea" class="form-control" id="notesText" placeholder="Enter any industry notes" rows="3"></textarea>
+
+						<label for="pictureInput" class="form-label text-start">Picture</label>
+						<input type="file" class="form-control" id="pictureInput" accept="image/*">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" id="clearButton">Clear</button>
+				<button type="button" class="btn btn-primary" id="addButton">Add</button>
+			</div>
+		</div>
+	</div>
+</div>

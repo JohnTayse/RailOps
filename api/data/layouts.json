@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "Name": "Main Layout",
+        "Description": "L-Gauge Modular Layout",
+        "Scale": "L",
+		"Virtual": "N",
+        "Color1": "#10E396",
+        "Color2": "#C7E310",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 2,
+        "Name": "Dresser Layout",
+        "Description": "",
+        "Scale": "N",
+		"Virtual": "N",
+        "Color1": "#28bdbb",
+        "Color2": "#e01ad9",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 3,
+        "Name": "Tay Valley Layout",
+        "Description": "",
+        "Scale": "N",
+		"Virtual": "Y",
+        "Color1": "#F5276C",
+        "Color2": "#276CF5",
+        "Notes": "",
+        "Photo": ""
+    }
+]

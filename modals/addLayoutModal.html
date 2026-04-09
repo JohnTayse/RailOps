@@ -1,0 +1,40 @@
+<div class="modal fade" id="addLayoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="addLayoutModalLabel">Add Layout</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="addLayoutForm">
+					<div>
+						<label for="layoutInput" class="form-label text-start">Layout Name</label>
+						<input type="text" class="form-control" id="layoutInput" placeholder="My Awesome Layout">
+
+						<label for="descriptionInput" class="form-label text-start">Description</label>
+						<input type="text" class="form-control" id="descriptionInput" placeholder="Main Layout">
+
+						<label for="scaleInput" class="form-label text-start">Scale</label>
+						<input type="text" class="form-control" id="scaleInput" placeholder="HO">
+
+						<label for="color1Input" class="form-label text-start">Color 1</label>
+						<input type="color" class="form-control" id="color1Input" value="#ffffff">
+
+						<label for="color2Input" class="form-label text-start">Color 2</label>
+						<input type="color" class="form-control" id="color2Input" value="#000000">
+
+						<label for="notesText" class="form-label text-start">Notes</label>
+						<textarea type="textarea" class="form-control" id="notesText" placeholder="Enter any layout notes" rows="3"></textarea>
+
+						<label for="pictureInput" class="form-label text-start">Picture</label>
+						<input type="file" class="form-control" id="pictureInput" accept="image/*">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" id="clearButton">Clear</button>
+				<button type="button" class="btn btn-primary" id="addButton">Add</button>
+			</div>
+		</div>
+	</div>
+</div>

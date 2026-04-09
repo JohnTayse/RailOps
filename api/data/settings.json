@@ -1,0 +1,4 @@
+{
+	"LocomotiveTypes": ["Diesel", "Steam", "Electric"],
+	"RollingStockTypes": ["Auto Rack", "Boxcar", "Caboose", "Container", "Covered Hopper", "Flat Car", "Gondola", "Hopper", "Intermodal", "MOW", "Passenger", "Reefer", "Special", "Steel Coil Car", "Tank Car", "Trailer", "Other"]
+}

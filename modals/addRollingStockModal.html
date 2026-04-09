@@ -1,0 +1,48 @@
+<div class="modal fade" id="addRollingStockModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="addRollingStockModalLabel">Add Rolling Stock</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="addRollingStockForm">
+					<div>
+						<label for="reportingMarkInput" class="form-label text-start">Reporting Mark</label>
+						<input type="text" class="form-control displayNamePart" id="reportingMarkInput" placeholder="RBOX">
+
+						<label for="roadNumberInput" class="form-label text-start">Road Number</label>
+						<input type="text" class="form-control displayNamePart" id="roadNumberInput" placeholder="67890">
+
+						<label for="displayName" class="form-label text-start">Display Name</label>
+						<input type="text" class="form-control" id="displayName" placeholder="RBOX67890" disabled>
+						
+						<label for="typeSelect" class="form-label text-start">Type</label>
+						<select id="typeSelect" class="form-select" aria-label="Type Select">
+							<option selected>&mdash;</option>
+						</select>
+
+						<label for="scaleInput" class="form-label text-start">Scale</label>
+						<input type="text" class="form-control" id="scaleInput" placeholder="HO">
+
+						<label for="color1Input" class="form-label text-start">Color 1</label>
+						<input type="color" class="form-control" id="color1Input" value="#ffffff">
+
+						<label for="color2Input" class="form-label text-start">Color 2</label>
+						<input type="color" class="form-control" id="color2Input" value="#000000">
+
+						<label for="notesText" class="form-label text-start">Notes</label>
+						<textarea type="textarea" class="form-control" id="notesText" placeholder="Enter any Rolling Stock notes" rows="3"></textarea>
+
+						<label for="pictureInput" class="form-label text-start">Picture</label>
+						<input type="file" class="form-control" id="pictureInput" accept="image/*">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" id="clearButton">Clear</button>
+				<button type="button" class="btn btn-primary" id="addButton">Add</button>
+			</div>
+		</div>
+	</div>
+</div>

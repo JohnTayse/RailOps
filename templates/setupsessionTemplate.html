@@ -1,0 +1,68 @@
+<div id="setupsession">
+	<h2>Setup <span id="sessiontype"></span> Session</h2>
+
+	<button id="homeButton" class="btn btn-secondary">Home</button>
+
+	<br />
+
+	<div class="row g-3 align-items-center">
+		<div class="col-auto">
+			<label for="sessionLayout" class="form-label text-start">Session Layout</label>
+		</div>
+		<div class="col-auto">
+			<select id="sessionLayout" class="form-select" aria-label="Session Layout Select">
+				<option selected>Choose a layout</option>
+			</select>
+		</div>
+	</div>
+
+	<br />
+
+	<div class="row g-2 text-start" id="sessionDifficultyDiv">
+		<div class="col-auto">
+			<label for="sessionDifficulty" class="form-label text-start">Session Difficulty</label>
+		</div>
+		<div class="col-auto">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="sessionDifficulty" id="sessionDifficultyEasy"
+					value="easy">
+				<label class="form-check-label" for="sessionDifficultyEasy">
+					Easy
+				</label>
+			</div>
+		</div>
+		<div class="col-auto">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="sessionDifficulty" id="sessionDifficultyMedium"
+					value="medium">
+				<label class="form-check-label" for="sessionDifficultyMedium">
+					Medium
+				</label>
+			</div>
+		</div>
+		<div class="col-auto">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="sessionDifficulty" id="sessionDifficultyHard"
+					value="hard">
+				<label class="form-check-label" for="sessionDifficultyHard">
+					Hard
+				</label>
+			</div>
+		</div>
+		<div class="col-auto">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="sessionDifficulty" id="sessionDifficultyCustom"
+					value="custom">
+				<label class="form-check-label" for="sessionDifficultyCustom">
+					Custom
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="row g-2 text-start">
+		<div id="sessionLocomotivesDiv"></div>
+		<div id="sessionRollingStockDiv"></div>
+	</div>
+
+	<button type="button" id="startSessionButton" class="btn btn-primary">Start Session</button>

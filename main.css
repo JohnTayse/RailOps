@@ -1,0 +1,40 @@
+.dataPane {
+	cursor: pointer;
+}
+
+.editRow {
+	height: 1.5em;
+	cursor: pointer;
+}
+
+.deleteRow {
+	height: 1.5em;
+	cursor: pointer;
+}
+
+.sessionRow {
+	height: 1.5em;
+	cursor: pointer;
+}
+
+.locoPopover {
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: black;
+}
+
+.locoPopover:hover {
+	color: black;
+}
+
+.stockPopover {
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: black;
+}
+
+.stockPopover:hover {
+	color: black;
+}

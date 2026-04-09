@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "ReportingMark": "CN",
+        "RoadNumber": "6710",
+        "Type": "Diesel",
+        "Scale": "L",
+        "Color1": "#000000",
+        "Color2": "#ff0000",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 2,
+        "ReportingMark": "ARR",
+        "RoadNumber": "3015",
+        "Type": "Diesel",
+        "Scale": "N",
+        "Color1": "#002f64",
+        "Color2": "#fecb00",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 3,
+        "ReportingMark": "ML",
+        "RoadNumber": "10219",
+        "Type": "Diesel",
+        "Scale": "L",
+        "Color1": "#4cbcd0",
+        "Color2": "#ffffff",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 4,
+        "ReportingMark": "CSXT",
+        "RoadNumber": "6420",
+        "Type": "Diesel",
+        "Scale": "N",
+        "Color1": "#a3a3a3",
+        "Color2": "#003a70",
+        "Notes": "",
+        "Photo": ""
+    }
+]

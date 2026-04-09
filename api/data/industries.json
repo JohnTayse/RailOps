@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "Name": "Lumber Yard",
+        "Description": "Warehouse with staging yard",
+        "Spots": 3,
+        "Layout": 2,
+        "Color1": "#48e9f4",
+        "Color2": "#baf099",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 2,
+        "Name": "New industry",
+        "Description": "",
+        "Spots": 2,
+        "Layout": 1,
+        "Color1": "#4b8535",
+        "Color2": "#9d3422",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 3,
+        "Name": "Team Track",
+        "Description": "Any rolling stock",
+        "Spots": 2,
+        "Layout": 2,
+        "Color1": "#58cbd4",
+        "Color2": "#bc0004",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 4,
+        "Name": "Metal Fabricator",
+        "Description": "",
+        "Spots": 2,
+        "Layout": 2,
+        "Color1": "#8cc532",
+        "Color2": "#040910",
+        "Notes": "",
+        "Photo": ""
+    },
+    {
+        "id": 5,
+        "Name": "Grain Elevator",
+        "Description": "",
+        "Spots": 2,
+        "Layout": 2,
+        "Color1": "#4e4b2a",
+        "Color2": "#554d93",
+        "Notes": "",
+        "Photo": ""
+    }
+]
